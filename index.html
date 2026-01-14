@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zanzstar Tours and Travel - Your Gateway to Zanzibar Adventures. Discover authentic Zanzibar experiences with trusted local experts. Book Safari Blue, Stone Town tours, and more.">
+    <meta name="keywords" content="Zanzibar tours, Safari Blue, Stone Town tour, Zanzibar travel, Tanzania tourism, Spice tour, Prison Island, Mnemba snorkeling">
+    <meta name="author" content="Zanzstar Tours and Travel">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Zanzstar Tours and Travel - Your Gateway to Zanzibar Adventures">
+    <meta property="og:description" content="Discover Zanzibar with trusted local experts. Unforgettable tours, safari experiences, and travel services.">
+    <meta property="og:image" content="images/og-image.jpg">
+    <meta property="og:url" content="https://zanzstartours.com">
+    
+    <title>Zanzstar Tours and Travel | Your Gateway to Zanzibar Adventures</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">ZANZ<span>STAR</span></a>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" class="nav-link active">Home</a></li>
+                    <li><a href="tours.html" class="nav-link">Tours</a></li>
+                    <li><a href="safari-blue.html" class="nav-link">Safari Blue</a></li>
+                    <li><a href="about.html" class="nav-link">About Zanzibar</a></li>
+                    <li><a href="services.html" class="nav-link">Travel Services</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact Us</a></li>
+                    <li><a href="contact.html" class="btn-nav">Book Now</a></li>
+                </ul>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <!-- Video Background -->
+        <video class="hero-video" autoplay muted loop playsinline poster="images/hero-poster.jpg">
+            <source src="videos/zanzibar-dhow.mp4" type="video/mp4">
+            <!-- Fallback image if video doesn't load -->
+        </video>
+        
+        <!-- Fallback Background Image -->
+        <div class="hero-image" style="background-image: url('https://images.unsplash.com/photo-1586523969483-8bc8e7a15f8e?w=1920&q=80');"></div>
+        
+        <!-- Overlay -->
+        <div class="hero-overlay"></div>
+        
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h1 class="hero-title">Connecting You to the Best on the Island...</h1>
+            <p class="hero-description">Your trusted concierge for all Zanzibar experiences. Whether you seek pristine beaches, cultural immersion, or unforgettable adventures, we connect you to the very best the island has to offer.</p>
+            <div class="hero-buttons">
+                <a href="tours.html" class="btn btn-primary btn-lg">
+                    Explore Experiences
+                </a>
+                <a href="contact.html" class="btn btn-secondary btn-lg">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <a href="#featured-tours">
+                <span>Scroll</span>
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Tours Section -->
+    <section class="section section-mint" id="featured-tours">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Our Zanzibar Experiences</h2>
+                <p class="section-description">ZANZSTAR specialists have the knowledge and resources to make your dream Zanzibar experience a reality. We ensure expectations are exceeded with every request, no matter the size.</p>
+            </div>
+            
+            <div class="tours-grid">
+                <!-- Tour Card 1: Safari Blue -->
+                <article class="tour-card animate-on-scroll">
+                    <div class="tour-card-image">
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80" alt="Safari Blue Tour - Sailing on traditional dhow in Zanzibar">
+                        <span class="tour-badge">Most Popular</span>
+                        <span class="tour-price">From $85</span>
+                    </div>
+                    <div class="tour-card-content">
+                        <h3 class="tour-card-title">Safari Blue Tour</h3>
+                        <p class="tour-card-description">Experience the ultimate marine adventure sailing on a traditional dhow, snorkeling in crystal-clear waters, and enjoying a seafood feast on a sandbank.</p>
+                        <div class="tour-card-meta">
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-clock"></i> Full Day
+                            </span>
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-user"></i> 2-20 People
+                            </span>
+                        </div>
+                        <div class="tour-card-footer">
+                            <a href="safari-blue.html" class="btn btn-outline btn-sm">View Details</a>
+                            <a href="https://wa.me/255656443740?text=Hello!%20I'm%20interested%20in%20Safari%20Blue%20Tour" class="btn btn-whatsapp btn-sm" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Book
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Tour Card 2: Stone Town -->
+                <article class="tour-card animate-on-scroll">
+                    <div class="tour-card-image">
+                        <img src="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80" alt="Stone Town Tour - Historic streets of Zanzibar">
+                        <span class="tour-badge">Cultural</span>
+                        <span class="tour-price">From $45</span>
+                    </div>
+                    <div class="tour-card-content">
+                        <h3 class="tour-card-title">Stone Town Tour</h3>
+                        <p class="tour-card-description">Walk through UNESCO World Heritage streets, explore the historic slave market, visit the House of Wonders, and discover the birthplace of Freddie Mercury.</p>
+                        <div class="tour-card-meta">
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-clock"></i> 3-4 Hours
+                            </span>
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-user"></i> 1-15 People
+                            </span>
+                        </div>
+                        <div class="tour-card-footer">
+                            <a href="tour-stone-town.html" class="btn btn-outline btn-sm">View Details</a>
+                            <a href="https://wa.me/255656443740?text=Hello!%20I'm%20interested%20in%20Stone%20Town%20Tour" class="btn btn-whatsapp btn-sm" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Book
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Tour Card 3: Prison Island -->
+                <article class="tour-card animate-on-scroll">
+                    <div class="tour-card-image">
+                        <img src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80" alt="Prison Island Tour - Giant Tortoises">
+                        <span class="tour-badge">Wildlife</span>
+                        <span class="tour-price">From $50</span>
+                    </div>
+                    <div class="tour-card-content">
+                        <h3 class="tour-card-title">Prison Island Tour</h3>
+                        <p class="tour-card-description">Meet the famous giant Aldabra tortoises, explore the historic prison ruins, snorkel in turquoise waters, and relax on pristine beaches.</p>
+                        <div class="tour-card-meta">
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-clock"></i> Half Day
+                            </span>
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-user"></i> 2-20 People
+                            </span>
+                        </div>
+                        <div class="tour-card-footer">
+                            <a href="tour-prison-island.html" class="btn btn-outline btn-sm">View Details</a>
+                            <a href="https://wa.me/255656443740?text=Hello!%20I'm%20interested%20in%20Prison%20Island%20Tour" class="btn btn-whatsapp btn-sm" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Book
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Tour Card 4: Spice Farm -->
+                <article class="tour-card animate-on-scroll">
+                    <div class="tour-card-image">
+                        <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80" alt="Spice Farm Tour - Fresh spices of Zanzibar">
+                        <span class="tour-badge">Cultural</span>
+                        <span class="tour-price">From $40</span>
+                    </div>
+                    <div class="tour-card-content">
+                        <h3 class="tour-card-title">Spice Farm Tour</h3>
+                        <p class="tour-card-description">Discover why Zanzibar is the Spice Island! Touch, smell, and taste exotic spices including cloves, vanilla, cardamom, and cinnamon at a traditional farm.</p>
+                        <div class="tour-card-meta">
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-clock"></i> 3-4 Hours
+                            </span>
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-user"></i> 2-15 People
+                            </span>
+                        </div>
+                        <div class="tour-card-footer">
+                            <a href="tour-spice-farm.html" class="btn btn-outline btn-sm">View Details</a>
+                            <a href="https://wa.me/255656443740?text=Hello!%20I'm%20interested%20in%20Spice%20Farm%20Tour" class="btn btn-whatsapp btn-sm" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Book
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Tour Card 5: Sunset Dhow Cruise -->
+                <article class="tour-card animate-on-scroll">
+                    <div class="tour-card-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Sunset Dhow Cruise - Romantic sunset sailing">
+                        <span class="tour-badge">Romantic</span>
+                        <span class="tour-price">From $55</span>
+                    </div>
+                    <div class="tour-card-content">
+                        <h3 class="tour-card-title">Sunset Dhow Cruise</h3>
+                        <p class="tour-card-description">Sail into the golden sunset on a traditional wooden dhow. Enjoy refreshments, snacks, and breathtaking views as the sun dips below the Indian Ocean horizon.</p>
+                        <div class="tour-card-meta">
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-clock"></i> 2-3 Hours
+                            </span>
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-user"></i> 2-30 People
+                            </span>
+                        </div>
+                        <div class="tour-card-footer">
+                            <a href="tour-sunset-cruise.html" class="btn btn-outline btn-sm">View Details</a>
+                            <a href="https://wa.me/255656443740?text=Hello!%20I'm%20interested%20in%20Sunset%20Dhow%20Cruise" class="btn btn-whatsapp btn-sm" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Book
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Tour Card 6: Mnemba Snorkeling -->
+                <article class="tour-card animate-on-scroll">
+                    <div class="tour-card-image">
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80" alt="Mnemba Snorkeling - Coral reefs and tropical fish">
+                        <span class="tour-badge">Adventure</span>
+                        <span class="tour-price">From $70</span>
+                    </div>
+                    <div class="tour-card-content">
+                        <h3 class="tour-card-title">Mnemba Snorkeling</h3>
+                        <p class="tour-card-description">Snorkel at one of Africa's best marine reserves! Swim with dolphins, explore vibrant coral reefs, and spot tropical fish around Mnemba Atoll.</p>
+                        <div class="tour-card-meta">
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-clock"></i> Half Day
+                            </span>
+                            <span class="tour-card-meta-item">
+                                <i class="far fa-user"></i> 2-12 People
+                            </span>
+                        </div>
+                        <div class="tour-card-footer">
+                            <a href="tour-mnemba.html" class="btn btn-outline btn-sm">View Details</a>
+                            <a href="https://wa.me/255656443740?text=Hello!%20I'm%20interested%20in%20Mnemba%20Snorkeling" class="btn btn-whatsapp btn-sm" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Book
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="tours.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-th-large"></i> View All Tours
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section section-mint" id="why-choose-us">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Why ZANZSTAR?</h2>
+                <p class="section-description">Our concierge specialists ensure our clients a reliable method for all travel and logistical services in Zanzibar, leaving you free to enjoy the very best of the Island.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h4 class="feature-title">Local Expertise</h4>
+                    <p class="feature-description">Born and raised in Zanzibar, we know every hidden gem, secret beach, and local story that makes your trip special.</p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4 class="feature-title">Safe & Reliable</h4>
+                    <p class="feature-description">Your safety is our priority. Licensed guides, quality equipment, and 24/7 support throughout your journey.</p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h4 class="feature-title">Personalized Service</h4>
+                    <p class="feature-description">Every traveler is unique. We customize experiences to match your interests, pace, and preferences.</p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h4 class="feature-title">Best Value</h4>
+                    <p class="feature-description">Competitive prices without compromising quality. No hidden fees, no surprises - just pure value.</p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4 class="feature-title">Eco-Friendly</h4>
+                    <p class="feature-description">We practice sustainable tourism to protect Zanzibar's pristine environment for future generations.</p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4 class="feature-title">24/7 Support</h4>
+                    <p class="feature-description">From booking to departure, we're just a WhatsApp message away. Always here to help!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800&q=80" alt="Zanzibar beach with traditional dhow boat">
+                </div>
+                
+                <div class="about-content animate-on-scroll">
+                    <h2 class="section-title">Our Zanzibar Concierge Services</h2>
+                    <p>ZANZSTAR specialists have the knowledge and resources to make your request a reality with constant transparency and support. We make sure expectations are exceeded with every request, no matter the size.</p>
+                    <p>Whether you are looking for the full VIP Luxury Zanzibar experience, access to the most popular island spots or secure the best value bookings, ZANZSTAR Tours and Travel are here to help.</p>
+                    
+                    <div class="about-features">
+                        <div class="about-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Licensed & Insured Guides</span>
+                        </div>
+                        <div class="about-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Small Group Tours</span>
+                        </div>
+                        <div class="about-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Custom Itineraries</span>
+                        </div>
+                        <div class="about-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>24/7 Customer Support</span>
+                        </div>
+                    </div>
+                    
+                    <a href="about.html" class="btn btn-primary">
+                        <i class="fas fa-info-circle"></i> Learn More About Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section section-mint" id="testimonials">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">What Our Guests Say</h2>
+                <p class="section-description">Don't just take our word for it - hear from travelers who've experienced Zanzibar with us.</p>
+            </div>
+            
+            <div class="testimonials-slider animate-on-scroll">
+                <div class="testimonial-card" id="testimonial-1">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="testimonial-text">"Safari Blue was the highlight of our honeymoon! The crew was amazing, the food was delicious, and snorkeling was incredible. Zanzstar made everything so easy from booking to the actual day. Highly recommend!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Sarah Johnson" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h5>Sarah Johnson</h5>
+                            <span>United States</span>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" id="testimonial-2" style="display: none;">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="testimonial-text">"Our guide was incredibly knowledgeable about Stone Town's history. We learned so much and discovered places we never would have found on our own. The spice tour was equally amazing. Will definitely book again!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Michael Chen" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h5>Michael Chen</h5>
+                            <span>Australia</span>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" id="testimonial-3" style="display: none;">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="testimonial-text">"From airport pickup to our last day tour, Zanzstar took care of everything. The team is responsive, professional, and genuinely cares about creating amazing experiences. Thank you for an unforgettable week!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Emma Schmidt" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h5>Emma Schmidt</h5>
+                            <span>Germany</span>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-dots">
+                <span class="slider-dot active" data-slide="1"></span>
+                <span class="slider-dot" data-slide="2"></span>
+                <span class="slider-dot" data-slide="3"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" style="background-image: url('https://images.unsplash.com/photo-1586500036706-41963de24d8b?w=1920&q=80');">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="cta-content animate-on-scroll">
+                <h2 class="cta-title">Ready to Explore Zanzibar?</h2>
+                <p class="cta-description">Let us help you create memories that will last a lifetime. Contact us today for a free consultation and personalized itinerary.</p>
+                <div class="hero-buttons">
+                    <a href="https://wa.me/255656443740?text=Hello!%20I'm%20interested%20in%20booking%20a%20tour%20with%20Zanzstar%20Tours" class="btn btn-whatsapp btn-lg" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                    </a>
+                    <a href="contact.html" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section section-white" id="faq">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-subtitle">FAQ</span>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-description">Got questions? We've got answers! Here are some common questions about traveling with us.</p>
+            </div>
+            
+            <div class="faq-list">
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        How do I book a tour?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Booking is easy! Simply click the "Book Now" button on any tour page to chat with us on WhatsApp, or fill out our contact form. We'll respond within hours to confirm your booking and answer any questions.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        Do you offer hotel pickup?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! All our tours include complimentary pickup and drop-off at your hotel or accommodation anywhere in Zanzibar. Just share your location when booking and we'll be there on time.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        What payment methods do you accept?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We accept cash (USD, EUR, or TZS), credit cards, and mobile payments. You can pay a deposit to secure your booking and the remainder on the day of the tour.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        What should I bring on tours?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We recommend sunscreen, sunglasses, a hat, comfortable shoes, swimwear (for water-based tours), a camera, and some cash for tips or souvenirs. We provide all necessary equipment for activities.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        Can I cancel or reschedule my booking?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, we offer free cancellation up to 24 hours before your tour. For rescheduling, just contact us and we'll find a new date that works for you. We understand travel plans can change!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">ZANZ<span>STAR</span></a>
+                    <p>Your trusted partner for authentic Zanzibar adventures. We connect you with the best experiences, from cultural tours to marine excursions.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="TripAdvisor"><i class="fab fa-tripadvisor"></i></a>
+                        <a href="https://wa.me/255656443740" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-wrapper">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="tours.html">All Tours</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Travel Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-wrapper">
+                    <h5 class="footer-title">Popular Tours</h5>
+                    <ul class="footer-links">
+                        <li><a href="safari-blue.html">Safari Blue</a></li>
+                        <li><a href="tour-stone-town.html">Stone Town Tour</a></li>
+                        <li><a href="tour-prison-island.html">Prison Island</a></li>
+                        <li><a href="tour-spice-farm.html">Spice Farm Tour</a></li>
+                        <li><a href="tour-sunset-cruise.html">Sunset Cruise</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h5 class="footer-title">Contact Us</h5>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:+255656443740">+255 656 443 740</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <a href="https://wa.me/255656443740">WhatsApp Us</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:info@zanzstartours.com">info@zanzstartours.com</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Zanzibar, Tanzania</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Zanzstar Tours and Travel. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/255656443740?text=Hello!%20I'm%20interested%20in%20your%20tours" target="_blank" aria-label="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
