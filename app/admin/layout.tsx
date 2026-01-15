@@ -1,10 +1,24 @@
 "use client";
 import Link from "next/link";
 import { LayoutDashboard, Calendar, Map, Users, Settings, LogOut, Search, Bell } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createAuthClient } from "@/lib/supabase/auth-client";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const supabase = createAuthClient();
+
+  // Don't show admin layout on login page
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/admin/login");
+    router.refresh();
+  };
 
   const menuItems = [
     { icon: <LayoutDashboard size={20} />, label: "Dashboard", href: "/admin" },
@@ -43,7 +57,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         <div className="mt-auto w-full px-4 border-t border-white/10 pt-8">
-           <button className="flex items-center gap-4 px-4 py-3 text-red-400 hover:text-red-300 transition-colors w-full">
+           <button 
+             onClick={handleLogout}
+             className="flex items-center gap-4 px-4 py-3 text-red-400 hover:text-red-300 transition-colors w-full"
+           >
             <LogOut size={20} />
             <span className="text-sm font-medium">Logout</span>
            </button>

@@ -1,17 +1,29 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Clock, Users, Check, X, MapPin, Calendar, Smartphone, ChevronRight } from "lucide-react";
+import { Clock, Users, Check, X, MapPin, Calendar, Smartphone, ChevronRight, ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { tours } from "@/lib/tours";
 import { notFound } from "next/navigation";
+import { useState } from "react";
 
 export default function TourDetailPage({ params }: { params: { tourSlug: string } }) {
   const tour = tours.find(t => t.slug === params.tourSlug);
+  const [currentImage, setCurrentImage] = useState(0);
 
   if (!tour) {
     return notFound();
   }
+
+  const gallery = tour.gallery || [tour.headerImage];
+
+  const nextImage = () => {
+    setCurrentImage((prev) => (prev + 1) % gallery.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImage((prev) => (prev - 1 + gallery.length) % gallery.length);
+  };
 
   return (
     <main className="bg-white">
@@ -21,11 +33,42 @@ export default function TourDetailPage({ params }: { params: { tourSlug: string 
       <section className="relative h-[70vh] min-h-[500px] flex items-end">
         <div className="absolute inset-0 z-0">
           <img 
-            src={tour.headerImage} 
+            src={gallery[currentImage]} 
             alt={tour.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-opacity duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          
+          {/* Gallery Navigation */}
+          {gallery.length > 1 && (
+            <>
+              <button 
+                onClick={prevImage}
+                className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all z-20"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button 
+                onClick={nextImage}
+                className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all z-20"
+              >
+                <ChevronRight size={24} />
+              </button>
+              
+              {/* Image Dots */}
+              <div className="absolute bottom-28 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                {gallery.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentImage(idx)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      idx === currentImage ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/80'
+                    }`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
         
         <div className="container mx-auto px-6 relative z-10 pb-20 text-white">
@@ -116,6 +159,32 @@ export default function TourDetailPage({ params }: { params: { tourSlug: string 
                  </ul>
                </div>
              </div>
+
+             {/* Photo Gallery */}
+             {gallery.length > 1 && (
+               <div className="mt-20">
+                 <h2 className="text-3xl font-serif mb-10 text-primary tracking-tight">Photo Gallery</h2>
+                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                   {gallery.map((img, idx) => (
+                     <motion.div
+                       key={idx}
+                       initial={{ opacity: 0, y: 20 }}
+                       whileInView={{ opacity: 1, y: 0 }}
+                       transition={{ delay: idx * 0.1 }}
+                       className="relative aspect-video rounded-2xl overflow-hidden cursor-pointer group"
+                       onClick={() => setCurrentImage(idx)}
+                     >
+                       <img 
+                         src={img} 
+                         alt={`${tour.title} - Photo ${idx + 1}`}
+                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                       />
+                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                     </motion.div>
+                   ))}
+                 </div>
+               </div>
+             )}
           </div>
 
           {/* Sidebar Booking */}

@@ -23,6 +23,8 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+.env.production
+.env.development
 
 # vercel
 .vercel
@@ -30,3 +32,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Supabase
+supabase/.branches
+supabase/.temp
+
+# Sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+private/

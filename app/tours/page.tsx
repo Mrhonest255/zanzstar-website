@@ -2,17 +2,29 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TourCard from "@/components/TourCard";
-import { tours } from "@/lib/tours";
+import { tours, getCategories, getSafariTours, getPackageTours, getSingleTours } from "@/lib/tours";
 import { useState } from "react";
 
 export default function ToursPage() {
   const [filter, setFilter] = useState("All");
+  const [tourType, setTourType] = useState("all");
   
-  const categories = ["All", ...Array.from(new Set(tours.map(t => t.category)))];
+  const categories = getCategories();
   
+  // Filter by tour type first
+  let filteredByType = tours;
+  if (tourType === "single") {
+    filteredByType = getSingleTours();
+  } else if (tourType === "package") {
+    filteredByType = getPackageTours();
+  } else if (tourType === "safari") {
+    filteredByType = getSafariTours();
+  }
+  
+  // Then filter by category
   const filteredTours = filter === "All" 
-    ? tours 
-    : tours.filter(t => t.category === filter);
+    ? filteredByType 
+    : filteredByType.filter(t => t.category === filter);
 
   return (
     <main className="min-h-screen bg-white">
@@ -30,21 +42,46 @@ export default function ToursPage() {
 
       {/* Filter Section */}
       <section className="py-12 border-b border-gray-100 sticky top-20 bg-white z-40 shadow-sm">
-        <div className="container mx-auto px-6 overflow-x-auto">
-          <div className="flex justify-center items-center gap-8 min-w-max">
-            {categories.map((cat) => (
+        <div className="container mx-auto px-6">
+          {/* Tour Type Tabs */}
+          <div className="flex justify-center items-center gap-4 mb-8">
+            {[
+              { key: "all", label: "All Tours" },
+              { key: "single", label: "Single Tours" },
+              { key: "package", label: "Package Tours" },
+              { key: "safari", label: "Safari Tours" }
+            ].map((type) => (
               <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all pb-2 border-b-2 ${
-                  filter === cat 
-                    ? "text-primary border-primary" 
-                    : "text-gray-400 border-transparent hover:text-gray-600"
+                key={type.key}
+                onClick={() => { setTourType(type.key); setFilter("All"); }}
+                className={`px-6 py-2 rounded-full text-xs uppercase tracking-widest font-bold transition-all ${
+                  tourType === type.key 
+                    ? "bg-primary text-white" 
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
-                {cat}
+                {type.label}
               </button>
             ))}
+          </div>
+          
+          {/* Category Filter */}
+          <div className="overflow-x-auto">
+            <div className="flex justify-center items-center gap-8 min-w-max">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all pb-2 border-b-2 ${
+                    filter === cat 
+                      ? "text-primary border-primary" 
+                      : "text-gray-400 border-transparent hover:text-gray-600"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
