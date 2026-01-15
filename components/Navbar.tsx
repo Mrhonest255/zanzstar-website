@@ -32,7 +32,7 @@ export default function Navbar() {
             { name: "Arrangements", href: "/arrangements" },
             { name: "Where To Stay", href: "/villas" },
             { name: "Concierge", href: "/services" },
-            { name: "Destination Management", href: "/management" }
+            { name: "Track Booking", href: "/track-booking" }
           ].map((item) => (
             <Link 
               key={item.name} 
@@ -60,15 +60,23 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 p-8 flex flex-col space-y-4 shadow-xl">
-          {["Home", "Tours", "Services", "About", "Contact"].map((item) => (
+        <div className="lg:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 p-8 flex flex-col space-y-4 shadow-xl">
+          {[
+            { name: "Home", href: "/" },
+            { name: "What To Do", href: "/tours" },
+            { name: "Arrangements", href: "/arrangements" },
+            { name: "Where To Stay", href: "/villas" },
+            { name: "Concierge", href: "/services" },
+            { name: "Track Booking", href: "/track-booking" },
+            { name: "Contact Us", href: "/contact" }
+          ].map((item) => (
             <Link 
-              key={item} 
-              href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-              className="text-gray-700 text-lg font-medium"
+              key={item.name} 
+              href={item.href}
+              className="text-gray-700 text-lg font-medium hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              {item}
+              {item.name}
             </Link>
           ))}
         </div>

@@ -151,7 +151,7 @@ export default function Home() {
                  <a href="/arrangements" className="btn-primary inline-block">View Safari Packages</a>
               </div>
               <div className="relative h-[600px] rounded-[3rem] overflow-hidden group">
-                 <img src="https://images.unsplash.com/photo-1516428940258-29737c5ae124?q=80&w=1200" className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" alt="Safari Jeep" />
+                 <img src="https://images.unsplash.com/photo-1516428940258-29737c5ae124?q=80&w=1200" loading="lazy" decoding="async" className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" alt="Safari Jeep" />
                  <div className="absolute inset-0 bg-gradient-to-t from-[#232d2b] via-transparent to-transparent" />
               </div>
            </div>

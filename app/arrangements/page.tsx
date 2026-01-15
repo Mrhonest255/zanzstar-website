@@ -65,12 +65,12 @@ export default function ArrangementsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4 h-[600px]">
                  <div className="space-y-4">
-                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=800" className="h-2/3 w-full object-cover rounded-3xl" alt="Safari" />
-                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?q=80&w=800" className="h-1/3 w-full object-cover rounded-3xl" alt="Lions" />
+                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=800" loading="lazy" decoding="async" className="h-2/3 w-full object-cover rounded-3xl" alt="Safari" />
+                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?q=80&w=800" loading="lazy" decoding="async" className="h-1/3 w-full object-cover rounded-3xl" alt="Lions" />
                  </div>
                  <div className="space-y-4 pt-12">
-                    <img src="https://images.unsplash.com/photo-1523805081730-614449274e7d?q=80&w=800" className="h-1/3 w-full object-cover rounded-3xl" alt="Elephant" />
-                    <img src="https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80&w=800" className="h-2/3 w-full object-cover rounded-3xl" alt="Landscape" />
+                    <img src="https://images.unsplash.com/photo-1523805081730-614449274e7d?q=80&w=800" loading="lazy" decoding="async" className="h-1/3 w-full object-cover rounded-3xl" alt="Elephant" />
+                    <img src="https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80&w=800" loading="lazy" decoding="async" className="h-2/3 w-full object-cover rounded-3xl" alt="Landscape" />
                  </div>
               </div>
            </div>

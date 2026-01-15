@@ -33,6 +33,8 @@ export default function TourCard({ title, image, price, duration, groupType, cat
         <img 
           src={imgSrc} 
           alt={title}
+          loading="lazy"
+          decoding="async"
           className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${imgLoading ? 'opacity-0' : 'opacity-100'}`}
           onLoad={() => setImgLoading(false)}
           onError={() => {
