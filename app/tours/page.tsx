@@ -88,9 +88,26 @@ export default function ToursPage() {
 
       <section className="py-24">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {/* Results count */}
+          <div className="mb-10 text-center">
+            <p className="text-gray-500 text-sm">
+              Showing <span className="font-bold text-primary">{filteredTours.length}</span> {filteredTours.length === 1 ? 'tour' : 'tours'}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {filteredTours.map((tour, index) => (
-              <TourCard key={index} {...tour} link={`/${tour.slug}`} />
+              <TourCard 
+                key={index} 
+                title={tour.title}
+                image={tour.image}
+                price={tour.price}
+                duration={tour.duration}
+                groupType={tour.groupType}
+                category={tour.category}
+                location={tour.location}
+                link={`/${tour.slug}`} 
+              />
             ))}
           </div>
           

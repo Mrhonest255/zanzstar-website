@@ -1,6 +1,7 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BookingForm from "@/components/BookingForm";
 import { Clock, Users, Check, X, MapPin, Calendar, Smartphone, ChevronRight, ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { tours } from "@/lib/tours";
@@ -10,12 +11,14 @@ import { useState } from "react";
 export default function TourDetailPage({ params }: { params: { tourSlug: string } }) {
   const tour = tours.find(t => t.slug === params.tourSlug);
   const [currentImage, setCurrentImage] = useState(0);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   if (!tour) {
     return notFound();
   }
 
   const gallery = tour.gallery || [tour.headerImage];
+  const priceNumber = parseInt(tour.price.replace(/[^0-9]/g, '')) || 0;
 
   const nextImage = () => {
     setCurrentImage((prev) => (prev + 1) % gallery.length);
@@ -170,16 +173,24 @@ export default function TourDetailPage({ params }: { params: { tourSlug: string 
                        key={idx}
                        initial={{ opacity: 0, y: 20 }}
                        whileInView={{ opacity: 1, y: 0 }}
+                       viewport={{ once: true }}
                        transition={{ delay: idx * 0.1 }}
-                       className="relative aspect-video rounded-2xl overflow-hidden cursor-pointer group"
-                       onClick={() => setCurrentImage(idx)}
+                       className="relative aspect-video rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
+                       onClick={() => {
+                         setCurrentImage(idx);
+                         window.scrollTo({ top: 0, behavior: 'smooth' });
+                       }}
                      >
                        <img 
                          src={img} 
                          alt={`${tour.title} - Photo ${idx + 1}`}
+                         loading="lazy"
+                         decoding="async"
                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                        />
-                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                         <span className="text-white text-xs uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity">View</span>
+                       </div>
                      </motion.div>
                    ))}
                  </div>
@@ -205,11 +216,22 @@ export default function TourDetailPage({ params }: { params: { tourSlug: string 
                    </div>
                  </div>
 
+                 <button 
+                   onClick={() => setIsBookingOpen(true)}
+                   className="w-full bg-white text-primary py-5 rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-xs hover:bg-secondary transition-all mb-4"
+                 >
+                   <Calendar size={18} />
+                   Book This Tour
+                 </button>
+                 
                  <a 
                    href={`https://wa.me/255656443740?text=Hello, I would like to book the ${tour.title} experience.`}
-                   className="w-full bg-white text-primary py-5 rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-xs hover:bg-secondary transition-all"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="w-full bg-[#25D366] text-white py-4 rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all"
                  >
-                   Book via WhatsApp
+                   <Smartphone size={18} />
+                   WhatsApp Us
                  </a>
                  
                  <p className="text-center mt-6 text-[10px] text-white/40 uppercase tracking-widest">Instant response guaranteed</p>
@@ -236,6 +258,17 @@ export default function TourDetailPage({ params }: { params: { tourSlug: string 
           </div>
         </div>
       </section>
+
+      {/* Booking Form Modal */}
+      <BookingForm
+        tourName={tour.title}
+        tourSlug={tour.slug}
+        tourPrice={priceNumber}
+        tourDuration={tour.duration}
+        tourLocation={tour.location}
+        isOpen={isBookingOpen}
+        onClose={() => setIsBookingOpen(false)}
+      />
 
       <Footer />
     </main>
