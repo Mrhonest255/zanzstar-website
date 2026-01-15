@@ -15,7 +15,7 @@ This is a complete, responsive website designed for a luxury tourism company. It
 ## 📁 Project Structure
 
 ```
-zanzstar/
+zanzstar/  
 ├── index.html              # Home page
 ├── tours.html              # All tours listing
 ├── safari-blue.html        # Safari Blue tour details
