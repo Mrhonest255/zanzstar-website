@@ -365,41 +365,14 @@ VALUES (
 );
 
 -- ============================================
--- CUSTOMERS
+-- CUSTOMERS (Real customers will be added through the booking system)
 -- ============================================
-INSERT INTO customers (email, first_name, last_name, phone, country, total_bookings, total_spent, is_vip) VALUES
-('sarah.johnson@example.com', 'Sarah', 'Johnson', '+1 555-0123', 'United States', 3, 650.00, FALSE),
-('michael.chen@example.com', 'Michael', 'Chen', '+44 20 7123 4567', 'United Kingdom', 8, 15200.00, TRUE),
-('elena.rossi@example.com', 'Elena', 'Rossi', '+39 02 1234 5678', 'Italy', 2, 420.00, FALSE),
-('david.miller@example.com', 'David', 'Miller', '+1 555-9876', 'United States', 1, 90.00, FALSE),
-('james.brown@example.com', 'James', 'Brown', '+61 2 1234 5678', 'Australia', 5, 8900.00, TRUE);
+-- No mock data - customers will be created when real bookings are made
 
 -- ============================================
--- BOOKINGS
+-- BOOKINGS (Real bookings will be added through the booking system)
 -- ============================================
-DO $$
-DECLARE
-  v_tour1_id UUID;
-  v_tour2_id UUID;
-  v_tour3_id UUID;
-  v_cust1_id UUID;
-  v_cust2_id UUID;
-  v_cust3_id UUID;
-BEGIN
-  SELECT id INTO v_tour1_id FROM tours WHERE slug = 'safari-blue-full-day' LIMIT 1;
-  SELECT id INTO v_tour2_id FROM tours WHERE slug = 'nakupenda-sandbank-tour' LIMIT 1;
-  SELECT id INTO v_tour3_id FROM tours WHERE slug = 'serengeti-national-park-safari' LIMIT 1;
-  SELECT id INTO v_cust1_id FROM customers WHERE email = 'sarah.johnson@example.com' LIMIT 1;
-  SELECT id INTO v_cust2_id FROM customers WHERE email = 'michael.chen@example.com' LIMIT 1;
-  SELECT id INTO v_cust3_id FROM customers WHERE email = 'elena.rossi@example.com' LIMIT 1;
-  
-  INSERT INTO bookings (reference, tour_id, customer_id, date, time, guests, total_amount, status, notes) VALUES
-  ('BK-8421', v_tour1_id, v_cust1_id, '2026-01-20', '07:30', 2, 170.00, 'confirmed', 'Honeymoon trip'),
-  ('BK-8422', v_tour3_id, v_cust2_id, '2026-01-25', '06:00', 4, 7200.00, 'pending', 'VIP client'),
-  ('BK-8423', v_tour2_id, v_cust3_id, '2026-01-18', '09:00', 2, 100.00, 'completed', NULL),
-  ('BK-8424', v_tour1_id, v_cust1_id, '2026-02-05', '07:30', 3, 255.00, 'confirmed', 'Birthday celebration'),
-  ('BK-8425', v_tour2_id, v_cust2_id, '2026-02-10', '09:00', 6, 300.00, 'confirmed', 'Group booking');
-END $$;
+-- No mock data - bookings will be created when customers book tours
 
 -- ============================================
 -- SITE SETTINGS
