@@ -27,7 +27,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="block text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">Call Us</span>
-                      <span className="text-gray-800 font-medium">+255 776 654 215</span>
+                      <a href="tel:+255656443740" className="text-gray-800 font-medium hover:text-primary">+255 656 443 740</a>
                     </div>
                  </div>
                  <div className="flex gap-6">

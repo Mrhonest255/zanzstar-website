@@ -206,7 +206,7 @@ export default function TourDetailPage({ params }: { params: { tourSlug: string 
                  </div>
 
                  <a 
-                   href={`https://wa.me/255776654215?text=Hello, I would like to book the ${tour.title} experience.`}
+                   href={`https://wa.me/255656443740?text=Hello, I would like to book the ${tour.title} experience.`}
                    className="w-full bg-white text-primary py-5 rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-xs hover:bg-secondary transition-all"
                  >
                    Book via WhatsApp

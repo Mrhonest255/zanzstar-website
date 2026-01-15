@@ -170,7 +170,7 @@ export default function Home() {
         <div className="container mx-auto px-6 relative z-10 text-center text-white">
           <h2 className="text-4xl md:text-6xl font-serif mb-12 leading-tight">Ready for your bespoke <br/> Zanzibar experience?</h2>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <a href="https://wa.me/255776654215" className="bg-white text-primary px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-secondary hover:text-primary transition-all shadow-xl">
+            <a href="https://wa.me/255656443740" className="bg-white text-primary px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-secondary hover:text-primary transition-all shadow-xl">
               Inquire via WhatsApp
             </a>
             <a href="/contact" className="border border-white/30 px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-all">

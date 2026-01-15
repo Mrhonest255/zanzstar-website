@@ -19,14 +19,19 @@ import {
 // SUPABASE CLIENT INITIALIZATION
 // ============================================
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
+const isConfigured = supabaseUrl && supabaseAnonKey;
+
+if (!isConfigured) {
   console.warn('Supabase credentials not found. Using fallback mode.');
 }
 
-export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
+// Only create client if configured, otherwise use a placeholder
+export const supabase = isConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null as unknown as ReturnType<typeof createClient>;
 
 // ============================================
 // DATABASE TYPES (matching schema)
@@ -52,6 +57,8 @@ export interface DashboardStats {
 // ============================================
 
 export async function getTours(): Promise<Tour[]> {
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('tours')
     .select('*')
@@ -67,6 +74,8 @@ export async function getTours(): Promise<Tour[]> {
 }
 
 export async function getActiveTours(): Promise<Tour[]> {
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('tours')
     .select('*')
@@ -82,6 +91,8 @@ export async function getActiveTours(): Promise<Tour[]> {
 }
 
 export async function getFeaturedTours(): Promise<Tour[]> {
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('tours')
     .select('*')
@@ -98,6 +109,8 @@ export async function getFeaturedTours(): Promise<Tour[]> {
 }
 
 export async function getTourById(id: string): Promise<Tour | null> {
+  if (!supabase) return null;
+  
   const { data, error } = await supabase
     .from('tours')
     .select('*')
@@ -113,6 +126,8 @@ export async function getTourById(id: string): Promise<Tour | null> {
 }
 
 export async function getTourBySlug(slug: string): Promise<Tour | null> {
+  if (!supabase) return null;
+  
   const { data, error } = await supabase
     .from('tours')
     .select('*')
@@ -128,6 +143,8 @@ export async function getTourBySlug(slug: string): Promise<Tour | null> {
 }
 
 export async function createTour(tour: TourInsert): Promise<Tour | null> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const dbTour = transformTourForDb(tour);
   
   const { data, error } = await supabase
@@ -145,6 +162,8 @@ export async function createTour(tour: TourInsert): Promise<Tour | null> {
 }
 
 export async function updateTour(id: string, updates: TourUpdate): Promise<Tour | null> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const dbUpdates = transformTourForDb(updates as TourInsert);
   
   const { data, error } = await supabase
@@ -163,6 +182,8 @@ export async function updateTour(id: string, updates: TourUpdate): Promise<Tour 
 }
 
 export async function deleteTour(id: string): Promise<boolean> {
+  if (!supabase) return false;
+  
   const { error } = await supabase
     .from('tours')
     .delete()
@@ -230,6 +251,8 @@ function transformTourForDb(tour: TourInsert): any {
 // ============================================
 
 export async function getBookings(): Promise<Booking[]> {
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('bookings')
     .select(`
@@ -248,6 +271,8 @@ export async function getBookings(): Promise<Booking[]> {
 }
 
 export async function getBookingById(id: string): Promise<Booking | null> {
+  if (!supabase) return null;
+  
   const { data, error } = await supabase
     .from('bookings')
     .select(`
@@ -267,6 +292,8 @@ export async function getBookingById(id: string): Promise<Booking | null> {
 }
 
 export async function createBooking(booking: BookingInsert): Promise<Booking | null> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const reference = `BK-${Math.floor(1000 + Math.random() * 9000)}`;
   
   const { data, error } = await supabase
@@ -299,6 +326,8 @@ export async function createBooking(booking: BookingInsert): Promise<Booking | n
 }
 
 export async function updateBooking(id: string, updates: BookingUpdate): Promise<Booking | null> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const { data, error } = await supabase
     .from('bookings')
     .update(updates)
@@ -323,6 +352,8 @@ export async function updateBookingStatus(id: string, status: BookingStatus): Pr
 }
 
 export async function deleteBooking(id: string): Promise<boolean> {
+  if (!supabase) return false;
+  
   const { error } = await supabase
     .from('bookings')
     .delete()
@@ -361,6 +392,8 @@ function transformDbBooking(dbBooking: any): Booking {
 // ============================================
 
 export async function getCustomers(): Promise<Customer[]> {
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('customers')
     .select('*')
@@ -375,6 +408,8 @@ export async function getCustomers(): Promise<Customer[]> {
 }
 
 export async function getCustomerById(id: string): Promise<Customer | null> {
+  if (!supabase) return null;
+  
   const { data, error } = await supabase
     .from('customers')
     .select('*')
@@ -390,6 +425,8 @@ export async function getCustomerById(id: string): Promise<Customer | null> {
 }
 
 export async function getCustomerByEmail(email: string): Promise<Customer | null> {
+  if (!supabase) return null;
+  
   const { data, error } = await supabase
     .from('customers')
     .select('*')
@@ -405,6 +442,8 @@ export async function getCustomerByEmail(email: string): Promise<Customer | null
 }
 
 export async function createCustomer(customer: CustomerInsert): Promise<Customer | null> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const { data, error } = await supabase
     .from('customers')
     .insert(customer)
@@ -420,6 +459,8 @@ export async function createCustomer(customer: CustomerInsert): Promise<Customer
 }
 
 export async function updateCustomer(id: string, updates: CustomerUpdate): Promise<Customer | null> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const { data, error } = await supabase
     .from('customers')
     .update(updates)
@@ -436,6 +477,8 @@ export async function updateCustomer(id: string, updates: CustomerUpdate): Promi
 }
 
 export async function deleteCustomer(id: string): Promise<boolean> {
+  if (!supabase) return false;
+  
   const { error } = await supabase
     .from('customers')
     .delete()
@@ -454,6 +497,8 @@ export async function deleteCustomer(id: string): Promise<boolean> {
 // ============================================
 
 export async function getVillas(): Promise<Villa[]> {
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('villas')
     .select('*')
@@ -468,6 +513,8 @@ export async function getVillas(): Promise<Villa[]> {
 }
 
 export async function getActiveVillas(): Promise<Villa[]> {
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('villas')
     .select('*')
@@ -482,6 +529,8 @@ export async function getActiveVillas(): Promise<Villa[]> {
 }
 
 export async function createVilla(villa: VillaInsert): Promise<Villa | null> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const { data, error } = await supabase
     .from('villas')
     .insert(villa)
@@ -501,6 +550,8 @@ export async function createVilla(villa: VillaInsert): Promise<Villa | null> {
 // ============================================
 
 export async function getContactInquiries(): Promise<ContactInquiry[]> {
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('contact_inquiries')
     .select('*')
@@ -521,6 +572,8 @@ export async function createContactInquiry(inquiry: {
   subject?: string;
   message: string;
 }): Promise<ContactInquiry | null> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const { data, error } = await supabase
     .from('contact_inquiries')
     .insert(inquiry)
@@ -540,6 +593,19 @@ export async function createContactInquiry(inquiry: {
 // ============================================
 
 export async function getDashboardStats(): Promise<DashboardStats> {
+  if (!supabase) {
+    return {
+      totalBookings: 0,
+      totalRevenue: 0,
+      activeTours: 0,
+      newCustomers: 0,
+      bookingChange: '+0%',
+      revenueChange: '+0%',
+      toursChange: '+0',
+      customersChange: '+0%',
+    };
+  }
+  
   // Get booking stats
   const { data: bookings, error: bookingsError } = await supabase
     .from('bookings')
@@ -580,6 +646,8 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 // ============================================
 
 export async function uploadImage(file: File, folder: string = 'tours'): Promise<string> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
   const fileExt = file.name.split('.').pop();
   const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
   
