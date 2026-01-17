@@ -103,9 +103,13 @@ export default function AdminSettingsPage() {
   useEffect(() => {
     const loadSettings = async () => {
       try {
+        console.log('Loading settings from database...');
         const { data, error } = await supabase
           .from('site_settings')
           .select('key,value');
+
+        console.log('Settings data:', data);
+        console.log('Settings error:', error);
 
         if (error) throw error;
 
@@ -116,6 +120,7 @@ export default function AdminSettingsPage() {
             (next as any)[key] = parseValue(row.key, row.value);
           }
         });
+        console.log('Parsed settings:', next);
         setSettings(next);
       } catch (err) {
         console.error('Error loading site settings:', err);
