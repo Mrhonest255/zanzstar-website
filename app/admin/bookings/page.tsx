@@ -1,90 +1,48 @@
 "use client";
-import { useState } from "react";
-import { Search, Filter, ChevronDown, Eye, Edit, Trash2, Check, X, Clock, Calendar, Users, DollarSign, MoreVertical, Download } from "lucide-react";
-import { Booking, BookingStatus } from "@/lib/supabase/types";
+import { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+import { Search, Filter, ChevronDown, Eye, Edit, Trash2, Check, X, Clock, Calendar, Users, DollarSign, MoreVertical, Download, RefreshCw, Loader2 } from "lucide-react";
 
-// Mock data - will be replaced with Supabase
-const mockBookings: Booking[] = [
-  {
-    id: '1',
-    created_at: '2026-01-10T10:00:00Z',
-    updated_at: '2026-01-10T10:00:00Z',
-    reference: 'BK-8421',
-    tour_id: '1',
-    customer_id: '1',
-    date: '2026-01-15',
-    time: '09:00',
-    guests: 2,
-    total_amount: 150,
-    status: 'confirmed',
-    notes: 'Anniversary trip',
-    special_requests: 'Please arrange flowers',
-    customer: { id: '1', email: 'sarah@example.com', first_name: 'Sarah', last_name: 'Johnson', phone: '+1 555-0123', country: 'USA' } as any,
-    tour: { id: '1', title: 'Stone Town Heritage Walk', slug: 'tour-stone-town', location: 'Stone Town' } as any,
-  },
-  {
-    id: '2',
-    created_at: '2026-01-11T14:30:00Z',
-    updated_at: '2026-01-11T14:30:00Z',
-    reference: 'BK-8422',
-    tour_id: '3',
-    customer_id: '2',
-    date: '2026-01-18',
-    time: '06:00',
-    guests: 4,
-    total_amount: 10000,
-    status: 'pending',
-    customer: { id: '2', email: 'michael@example.com', first_name: 'Michael', last_name: 'Chen', phone: '+44 20 7123 4567', country: 'UK' } as any,
-    tour: { id: '3', title: 'Serengeti Fly-in Safari', slug: 'serengeti-fly-in-safari', location: 'Serengeti' } as any,
-  },
-  {
-    id: '3',
-    created_at: '2026-01-08T09:15:00Z',
-    updated_at: '2026-01-14T18:00:00Z',
-    reference: 'BK-8423',
-    tour_id: '2',
-    customer_id: '3',
-    date: '2026-01-14',
-    time: '16:30',
-    guests: 2,
-    total_amount: 210,
-    status: 'completed',
-    customer: { id: '3', email: 'elena@example.com', first_name: 'Elena', last_name: 'Rossi', phone: '+39 02 1234 5678', country: 'Italy' } as any,
-    tour: { id: '2', title: 'Private Sunset Cruise', slug: 'tour-sunset-cruise', location: 'Stone Town Waterfront' } as any,
-  },
-  {
-    id: '4',
-    created_at: '2026-01-09T11:00:00Z',
-    updated_at: '2026-01-12T10:00:00Z',
-    reference: 'BK-8424',
-    tour_id: '1',
-    customer_id: '4',
-    date: '2026-01-20',
-    time: '09:00',
-    guests: 1,
-    total_amount: 90,
-    status: 'cancelled',
-    notes: 'Customer requested cancellation due to flight change',
-    customer: { id: '4', email: 'david@example.com', first_name: 'David', last_name: 'Miller', phone: '+1 555-9876', country: 'USA' } as any,
-    tour: { id: '1', title: 'Spice Plantation Tour', slug: 'spice-plantation', location: 'Zanzibar' } as any,
-  },
-  {
-    id: '5',
-    created_at: '2026-01-12T16:45:00Z',
-    updated_at: '2026-01-12T16:45:00Z',
-    reference: 'BK-8425',
-    tour_id: '4',
-    customer_id: '5',
-    date: '2026-02-02',
-    time: '10:00',
-    guests: 6,
-    total_amount: 4500,
-    status: 'confirmed',
-    special_requests: 'Vegetarian meals for 2 guests',
-    customer: { id: '5', email: 'brown.family@example.com', first_name: 'James', last_name: 'Brown', phone: '+61 2 1234 5678', country: 'Australia' } as any,
-    tour: { id: '4', title: 'Prison Island Adventure', slug: 'prison-island', location: 'Prison Island' } as any,
-  },
-];
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
+
+interface Customer {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  country: string;
+}
+
+interface Tour {
+  id: string;
+  title: string;
+  slug: string;
+  location: string;
+}
+
+interface Booking {
+  id: string;
+  reference: string;
+  tour_id: string;
+  customer_id: string;
+  date: string;
+  time: string;
+  guests: number;
+  total_amount: number;
+  status: BookingStatus;
+  notes?: string;
+  special_requests?: string;
+  created_at: string;
+  updated_at: string;
+  customer?: Customer;
+  tour?: Tour;
+}
 
 const statusColors: Record<BookingStatus, { bg: string; text: string }> = {
   pending: { bg: 'bg-amber-50', text: 'text-amber-600' },
@@ -94,28 +52,71 @@ const statusColors: Record<BookingStatus, { bg: string; text: string }> = {
 };
 
 export default function AdminBookingsPage() {
-  const [bookings, setBookings] = useState<Booking[]>(mockBookings);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [showStatusMenu, setShowStatusMenu] = useState<string | null>(null);
+  const [updating, setUpdating] = useState(false);
+
+  // Fetch bookings from Supabase
+  const fetchBookings = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('bookings')
+        .select(`
+          *,
+          customer:customers(*),
+          tour:tours(id, title, slug, location)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setBookings(data || []);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
 
   // Filter bookings
   const filteredBookings = bookings.filter(booking => {
     const matchesSearch = 
-      booking.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      booking.customer?.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      booking.customer?.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      booking.tour?.title.toLowerCase().includes(searchQuery.toLowerCase());
+      booking.reference?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      booking.customer?.first_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      booking.customer?.last_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      booking.tour?.title?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'all' || booking.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const updateBookingStatus = (id: string, status: BookingStatus) => {
-    setBookings(bookings.map(b => 
-      b.id === id ? { ...b, status, updated_at: new Date().toISOString() } : b
-    ));
-    setShowStatusMenu(null);
+  const updateBookingStatus = async (id: string, status: BookingStatus) => {
+    setUpdating(true);
+    try {
+      const { error } = await supabase
+        .from('bookings')
+        .update({ status, updated_at: new Date().toISOString() })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      // Update local state
+      setBookings(bookings.map(b => 
+        b.id === id ? { ...b, status, updated_at: new Date().toISOString() } : b
+      ));
+      setShowStatusMenu(null);
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+    } finally {
+      setUpdating(false);
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -140,8 +141,19 @@ export default function AdminBookingsPage() {
     confirmed: bookings.filter(b => b.status === 'confirmed').length,
     completed: bookings.filter(b => b.status === 'completed').length,
     cancelled: bookings.filter(b => b.status === 'cancelled').length,
-    totalRevenue: bookings.filter(b => b.status !== 'cancelled').reduce((sum, b) => sum + b.total_amount, 0),
+    totalRevenue: bookings.filter(b => b.status !== 'cancelled').reduce((sum, b) => sum + (b.total_amount || 0), 0),
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <Loader2 size={48} className="animate-spin text-primary mx-auto mb-4" />
+          <p className="text-gray-500">Loading bookings...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -151,10 +163,19 @@ export default function AdminBookingsPage() {
           <h1 className="text-3xl font-serif text-gray-900">Bookings</h1>
           <p className="text-gray-500 text-sm mt-1">Manage customer reservations</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-sm">
-          <Download size={18} />
-          Export CSV
-        </button>
+        <div className="flex gap-3">
+          <button 
+            onClick={fetchBookings}
+            className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-sm"
+          >
+            <RefreshCw size={18} />
+            Refresh
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-sm">
+            <Download size={18} />
+            Export CSV
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -197,7 +218,7 @@ export default function AdminBookingsPage() {
             className="w-full pl-12 pr-4 py-3 border border-gray-100 rounded-xl focus:outline-none focus:border-primary bg-gray-50"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {['all', 'pending', 'confirmed', 'completed', 'cancelled'].map(status => (
             <button
               key={status}
@@ -243,7 +264,7 @@ export default function AdminBookingsPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="text-sm">{booking.tour?.title}</p>
+                    <p className="text-sm">{booking.tour?.title || 'N/A'}</p>
                   </td>
                   <td className="px-6 py-4">
                     <div className="text-sm">
@@ -255,12 +276,12 @@ export default function AdminBookingsPage() {
                     <span className="text-sm">{booking.guests}</span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="font-serif">{formatCurrency(booking.total_amount)}</span>
+                    <span className="font-serif">{formatCurrency(booking.total_amount || 0)}</span>
                   </td>
                   <td className="px-6 py-4 relative">
                     <button
                       onClick={() => setShowStatusMenu(showStatusMenu === booking.id ? null : booking.id)}
-                      className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-bold ${statusColors[booking.status].bg} ${statusColors[booking.status].text}`}
+                      className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-bold ${statusColors[booking.status]?.bg || 'bg-gray-50'} ${statusColors[booking.status]?.text || 'text-gray-600'}`}
                     >
                       {booking.status}
                       <ChevronDown size={12} />
@@ -273,7 +294,8 @@ export default function AdminBookingsPage() {
                           <button
                             key={status}
                             onClick={() => updateBookingStatus(booking.id, status)}
-                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 capitalize ${
+                            disabled={updating}
+                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 capitalize disabled:opacity-50 ${
                               booking.status === status ? 'font-bold text-primary' : ''
                             }`}
                           >
@@ -307,7 +329,12 @@ export default function AdminBookingsPage() {
               <Calendar size={24} className="text-gray-400" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">No bookings found</h3>
-            <p className="text-gray-500 text-sm">Try adjusting your search or filters</p>
+            <p className="text-gray-500 text-sm">
+              {bookings.length === 0 
+                ? "You haven't received any bookings yet. Once customers book tours, they will appear here."
+                : "Try adjusting your search or filters"
+              }
+            </p>
           </div>
         )}
       </div>
@@ -332,7 +359,7 @@ export default function AdminBookingsPage() {
             <div className="p-6 space-y-6">
               {/* Status */}
               <div className="flex items-center justify-between">
-                <span className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-widest ${statusColors[selectedBooking.status].bg} ${statusColors[selectedBooking.status].text}`}>
+                <span className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-widest ${statusColors[selectedBooking.status]?.bg || 'bg-gray-50'} ${statusColors[selectedBooking.status]?.text || 'text-gray-600'}`}>
                   {selectedBooking.status}
                 </span>
                 <p className="text-sm text-gray-400">
@@ -343,7 +370,7 @@ export default function AdminBookingsPage() {
               {/* Tour Info */}
               <div className="bg-gray-50 rounded-2xl p-4">
                 <p className="text-xs text-gray-400 uppercase tracking-widest mb-2">Tour</p>
-                <h3 className="font-serif text-lg">{selectedBooking.tour?.title}</h3>
+                <h3 className="font-serif text-lg">{selectedBooking.tour?.title || 'N/A'}</h3>
                 <p className="text-sm text-gray-500">{selectedBooking.tour?.location}</p>
               </div>
 
@@ -367,7 +394,7 @@ export default function AdminBookingsPage() {
                 <div className="bg-gray-50 rounded-xl p-4">
                   <DollarSign size={20} className="text-primary mb-2" />
                   <p className="text-xs text-gray-400">Total</p>
-                  <p className="font-serif text-lg">{formatCurrency(selectedBooking.total_amount)}</p>
+                  <p className="font-serif text-lg">{formatCurrency(selectedBooking.total_amount || 0)}</p>
                 </div>
               </div>
 
@@ -401,13 +428,15 @@ export default function AdminBookingsPage() {
                   <>
                     <button
                       onClick={() => { updateBookingStatus(selectedBooking.id, 'confirmed'); setSelectedBooking(null); }}
-                      className="flex-1 flex items-center justify-center gap-2 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
+                      disabled={updating}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors disabled:opacity-50"
                     >
                       <Check size={18} /> Confirm Booking
                     </button>
                     <button
                       onClick={() => { updateBookingStatus(selectedBooking.id, 'cancelled'); setSelectedBooking(null); }}
-                      className="flex-1 flex items-center justify-center gap-2 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors"
+                      disabled={updating}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors disabled:opacity-50"
                     >
                       <X size={18} /> Cancel
                     </button>
@@ -416,7 +445,8 @@ export default function AdminBookingsPage() {
                 {selectedBooking.status === 'confirmed' && (
                   <button
                     onClick={() => { updateBookingStatus(selectedBooking.id, 'completed'); setSelectedBooking(null); }}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors"
+                    disabled={updating}
+                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors disabled:opacity-50"
                   >
                     <Check size={18} /> Mark as Completed
                   </button>

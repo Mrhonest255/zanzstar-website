@@ -1,102 +1,62 @@
 "use client";
-import { useState } from "react";
-import { Search, Plus, Eye, Edit, Star, Mail, Phone, MapPin, DollarSign, Calendar, MoreVertical, Download, User } from "lucide-react";
-import { Customer } from "@/lib/supabase/types";
+import { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+import { Search, Plus, Eye, Edit, Star, Mail, Phone, MapPin, DollarSign, Calendar, MoreVertical, Download, User, RefreshCw, Loader2 } from "lucide-react";
 
-// Mock data
-const mockCustomers: Customer[] = [
-  {
-    id: '1',
-    created_at: '2025-06-15T10:00:00Z',
-    updated_at: '2026-01-10T10:00:00Z',
-    email: 'sarah.johnson@example.com',
-    first_name: 'Sarah',
-    last_name: 'Johnson',
-    phone: '+1 555-0123',
-    country: 'United States',
-    total_bookings: 3,
-    total_spent: 650,
-    is_vip: false,
-  },
-  {
-    id: '2',
-    created_at: '2025-03-20T14:30:00Z',
-    updated_at: '2026-01-11T14:30:00Z',
-    email: 'michael.chen@example.com',
-    first_name: 'Michael',
-    last_name: 'Chen',
-    phone: '+44 20 7123 4567',
-    country: 'United Kingdom',
-    total_bookings: 8,
-    total_spent: 15200,
-    is_vip: true,
-  },
-  {
-    id: '3',
-    created_at: '2025-09-05T09:15:00Z',
-    updated_at: '2026-01-14T18:00:00Z',
-    email: 'elena.rossi@example.com',
-    first_name: 'Elena',
-    last_name: 'Rossi',
-    phone: '+39 02 1234 5678',
-    country: 'Italy',
-    total_bookings: 2,
-    total_spent: 420,
-    is_vip: false,
-  },
-  {
-    id: '4',
-    created_at: '2025-11-01T11:00:00Z',
-    updated_at: '2025-11-01T11:00:00Z',
-    email: 'david.miller@example.com',
-    first_name: 'David',
-    last_name: 'Miller',
-    phone: '+1 555-9876',
-    country: 'United States',
-    total_bookings: 1,
-    total_spent: 90,
-    is_vip: false,
-  },
-  {
-    id: '5',
-    created_at: '2025-08-22T16:45:00Z',
-    updated_at: '2026-01-12T16:45:00Z',
-    email: 'brown.family@example.com',
-    first_name: 'James',
-    last_name: 'Brown',
-    phone: '+61 2 1234 5678',
-    country: 'Australia',
-    total_bookings: 5,
-    total_spent: 8900,
-    is_vip: true,
-  },
-  {
-    id: '6',
-    created_at: '2025-12-10T08:00:00Z',
-    updated_at: '2025-12-10T08:00:00Z',
-    email: 'akiko.tanaka@example.com',
-    first_name: 'Akiko',
-    last_name: 'Tanaka',
-    phone: '+81 3 1234 5678',
-    country: 'Japan',
-    total_bookings: 4,
-    total_spent: 3200,
-    is_vip: false,
-  },
-];
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+interface Customer {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  country: string;
+  total_bookings: number;
+  total_spent: number;
+  is_vip: boolean;
+}
 
 export default function AdminCustomersPage() {
-  const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterVip, setFilterVip] = useState<'all' | 'vip' | 'regular'>('all');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
+  // Fetch customers from Supabase
+  const fetchCustomers = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setCustomers(data || []);
+    } catch (error) {
+      console.error('Error fetching customers:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
   // Filter customers
   const filteredCustomers = customers.filter(customer => {
     const matchesSearch = 
-      customer.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchQuery.toLowerCase());
+      customer.first_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.last_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.email?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesVip = filterVip === 'all' || 
                        (filterVip === 'vip' && customer.is_vip) ||
                        (filterVip === 'regular' && !customer.is_vip);
@@ -107,7 +67,7 @@ export default function AdminCustomersPage() {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
-    }).format(amount);
+    }).format(amount || 0);
   };
 
   const formatDate = (dateString: string) => {
@@ -118,19 +78,41 @@ export default function AdminCustomersPage() {
     });
   };
 
-  const toggleVip = (id: string) => {
-    setCustomers(customers.map(c => 
-      c.id === id ? { ...c, is_vip: !c.is_vip } : c
-    ));
+  const toggleVip = async (id: string, currentVip: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('customers')
+        .update({ is_vip: !currentVip })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      setCustomers(customers.map(c => 
+        c.id === id ? { ...c, is_vip: !currentVip } : c
+      ));
+    } catch (error) {
+      console.error('Error updating VIP status:', error);
+    }
   };
 
   // Stats
   const stats = {
     total: customers.length,
     vip: customers.filter(c => c.is_vip).length,
-    totalSpent: customers.reduce((sum, c) => sum + c.total_spent, 0),
-    avgSpent: customers.length ? customers.reduce((sum, c) => sum + c.total_spent, 0) / customers.length : 0,
+    totalSpent: customers.reduce((sum, c) => sum + (c.total_spent || 0), 0),
+    avgSpent: customers.length ? customers.reduce((sum, c) => sum + (c.total_spent || 0), 0) / customers.length : 0,
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <Loader2 size={48} className="animate-spin text-primary mx-auto mb-4" />
+          <p className="text-gray-500">Loading customers...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -140,10 +122,19 @@ export default function AdminCustomersPage() {
           <h1 className="text-3xl font-serif text-gray-900">Customers</h1>
           <p className="text-gray-500 text-sm mt-1">Manage your customer database</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-sm">
-          <Download size={18} />
-          Export
-        </button>
+        <div className="flex gap-3">
+          <button 
+            onClick={fetchCustomers}
+            className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-sm"
+          >
+            <RefreshCw size={18} />
+            Refresh
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-sm">
+            <Download size={18} />
+            Export
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -209,7 +200,7 @@ export default function AdminCustomersPage() {
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-serif text-xl">
-                  {customer.first_name[0]}{customer.last_name[0]}
+                  {customer.first_name?.[0] || '?'}{customer.last_name?.[0] || '?'}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -222,7 +213,7 @@ export default function AdminCustomersPage() {
                 </div>
               </div>
               <button
-                onClick={() => toggleVip(customer.id)}
+                onClick={() => toggleVip(customer.id, customer.is_vip)}
                 className={`p-2 rounded-lg transition-colors ${
                   customer.is_vip 
                     ? 'bg-amber-50 text-amber-600 hover:bg-amber-100' 
@@ -252,7 +243,7 @@ export default function AdminCustomersPage() {
             <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-100">
               <div>
                 <p className="text-xs text-gray-400 uppercase">Bookings</p>
-                <p className="font-serif text-lg">{customer.total_bookings}</p>
+                <p className="font-serif text-lg">{customer.total_bookings || 0}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 uppercase">Total Spent</p>
@@ -285,7 +276,12 @@ export default function AdminCustomersPage() {
             <User size={24} className="text-gray-400" />
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">No customers found</h3>
-          <p className="text-gray-500 text-sm">Try adjusting your search or filters</p>
+          <p className="text-gray-500 text-sm">
+            {customers.length === 0 
+              ? "You don't have any customers yet. Once customers make bookings, they will appear here."
+              : "Try adjusting your search or filters"
+            }
+          </p>
         </div>
       )}
 
@@ -296,7 +292,7 @@ export default function AdminCustomersPage() {
             <div className="p-6 border-b border-gray-100">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-serif text-2xl">
-                  {selectedCustomer.first_name[0]}{selectedCustomer.last_name[0]}
+                  {selectedCustomer.first_name?.[0] || '?'}{selectedCustomer.last_name?.[0] || '?'}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -340,7 +336,7 @@ export default function AdminCustomersPage() {
                 <div className="bg-gray-50 rounded-xl p-4">
                   <Calendar size={20} className="text-primary mb-2" />
                   <p className="text-xs text-gray-400">Total Bookings</p>
-                  <p className="text-2xl font-serif">{selectedCustomer.total_bookings}</p>
+                  <p className="text-2xl font-serif">{selectedCustomer.total_bookings || 0}</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4">
                   <DollarSign size={20} className="text-primary mb-2" />
