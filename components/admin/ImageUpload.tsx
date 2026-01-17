@@ -1,6 +1,12 @@
 "use client";
 import { useState, useRef } from "react";
-import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
+import { Upload, X, Image as ImageIcon, Loader2, AlertCircle } from "lucide-react";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 interface ImageUploadProps {
   value?: string;
@@ -9,6 +15,7 @@ interface ImageUploadProps {
   label?: string;
   className?: string;
   aspectRatio?: "square" | "video" | "wide";
+  folder?: string;
 }
 
 export default function ImageUpload({ 
@@ -17,10 +24,12 @@ export default function ImageUpload({
   onRemove,
   label = "Upload Image",
   className = "",
-  aspectRatio = "video"
+  aspectRatio = "video",
+  folder = "tours"
 }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const aspectClasses = {
@@ -29,34 +38,50 @@ export default function ImageUpload({
     wide: "aspect-[21/9]"
   };
 
+  const uploadToSupabase = async (file: File): Promise<string> => {
+    const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+    const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+
+    const { data, error } = await supabase.storage
+      .from('tour-images')
+      .upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) {
+      console.error('Supabase upload error:', error);
+      throw new Error(error.message || 'Upload failed');
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('tour-images')
+      .getPublicUrl(data.path);
+
+    return urlData.publicUrl;
+  };
+
   const handleFile = async (file: File) => {
+    setError(null);
+
     if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file');
+      setError('Please upload an image file (PNG, JPG, WebP)');
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('File size must be less than 5MB');
+      setError('File size must be less than 5MB');
       return;
     }
 
     setIsUploading(true);
     
     try {
-      // TODO: Replace with actual Supabase upload
-      // import { uploadImage } from '@/lib/supabase/client';
-      // const url = await uploadImage(file, 'tours');
-      
-      // Mock: Create local preview URL
-      const url = URL.createObjectURL(file);
-      
-      // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const url = await uploadToSupabase(file);
       onChange(url);
-    } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Upload failed. Please try again.');
+    } catch (err: any) {
+      console.error('Upload failed:', err);
+      setError(err.message || 'Upload failed. Please try again.');
     } finally {
       setIsUploading(false);
     }
@@ -102,6 +127,7 @@ export default function ImageUpload({
             type="button"
             onClick={() => inputRef.current?.click()}
             className="p-3 bg-white rounded-full hover:bg-gray-100 transition-colors"
+            title="Change Image"
           >
             <Upload size={20} className="text-gray-700" />
           </button>
@@ -110,6 +136,7 @@ export default function ImageUpload({
               type="button"
               onClick={onRemove}
               className="p-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
+              title="Remove Image"
             >
               <X size={20} className="text-white" />
             </button>
@@ -127,49 +154,68 @@ export default function ImageUpload({
   }
 
   return (
-    <div
-      className={`relative ${aspectClasses[aspectRatio]} rounded-2xl border-2 border-dashed transition-colors ${
-        dragActive 
-          ? "border-primary bg-primary/5" 
-          : "border-gray-200 hover:border-gray-300 bg-gray-50"
-      } ${className}`}
-      onDragEnter={handleDrag}
-      onDragLeave={handleDrag}
-      onDragOver={handleDrag}
-      onDrop={handleDrop}
-    >
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleChange}
-        className="hidden"
-      />
-      
-      <button
-        type="button"
-        onClick={() => inputRef.current?.click()}
-        disabled={isUploading}
-        className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-3 cursor-pointer"
+    <div className="space-y-2">
+      <div
+        className={`relative ${aspectClasses[aspectRatio]} rounded-2xl border-2 border-dashed transition-colors ${
+          dragActive 
+            ? "border-primary bg-primary/5" 
+            : error 
+              ? "border-red-300 bg-red-50"
+              : "border-gray-200 hover:border-gray-300 bg-gray-50"
+        } ${className}`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
       >
-        {isUploading ? (
-          <>
-            <Loader2 size={32} className="text-primary animate-spin" />
-            <span className="text-sm text-gray-500">Uploading...</span>
-          </>
-        ) : (
-          <>
-            <div className="p-4 bg-gray-100 rounded-full">
-              <ImageIcon size={24} className="text-gray-400" />
-            </div>
-            <div className="text-center">
-              <p className="text-sm font-medium text-gray-700">{label}</p>
-              <p className="text-xs text-gray-400 mt-1">Drag & drop or click to browse</p>
-              <p className="text-xs text-gray-400">PNG, JPG up to 5MB</p>
-            </div>
-          </>
-        )}
-      </button>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleChange}
+          className="hidden"
+        />
+        
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={isUploading}
+          className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-3 cursor-pointer"
+        >
+          {isUploading ? (
+            <>
+              <Loader2 size={32} className="text-primary animate-spin" />
+              <span className="text-sm text-gray-500">Uploading to cloud...</span>
+            </>
+          ) : (
+            <>
+              <div className={`p-4 rounded-full ${error ? 'bg-red-100' : 'bg-gray-100'}`}>
+                {error ? (
+                  <AlertCircle size={24} className="text-red-400" />
+                ) : (
+                  <ImageIcon size={24} className="text-gray-400" />
+                )}
+              </div>
+              <div className="text-center px-4">
+                <p className={`text-sm font-medium ${error ? 'text-red-600' : 'text-gray-700'}`}>
+                  {error || label}
+                </p>
+                <p className="text-xs text-gray-400 mt-1">Drag & drop or click to browse</p>
+                <p className="text-xs text-gray-400">PNG, JPG, WebP up to 5MB</p>
+              </div>
+            </>
+          )}
+        </button>
+      </div>
+      {error && (
+        <button 
+          type="button"
+          onClick={() => setError(null)} 
+          className="text-xs text-red-500 hover:text-red-700 underline"
+        >
+          Try again
+        </button>
+      )}
     </div>
   );
 }
