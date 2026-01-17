@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Plus, Search, Edit, Trash2, Eye, Star, MapPin, Clock, RefreshCw, Loader2, Menu, X } from "lucide-react";
 import TourForm from "@/components/admin/TourForm";
+import { Tour, TourCategory } from "@/lib/supabase/types";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-type TourCategory = 'Culture' | 'Nature' | 'Adventure' | 'Wildlife' | 'Beach' | 'Safari' | 'Luxury';
-
-interface Tour {
+// Database tour type (matches Supabase schema)
+interface DbTour {
   id: string;
   created_at: string;
   updated_at: string;
@@ -36,16 +36,41 @@ interface Tour {
   is_active: boolean;
 }
 
+// Transform database tour to app Tour type
+const transformDbTour = (dbTour: DbTour): Tour => ({
+  id: dbTour.id,
+  created_at: dbTour.created_at,
+  updated_at: dbTour.updated_at,
+  slug: dbTour.slug,
+  title: dbTour.title,
+  description: dbTour.description,
+  image: dbTour.image_url || '',
+  header_image: dbTour.header_image_url || '',
+  price: dbTour.price,
+  price_display: `From $${dbTour.price}`,
+  duration: dbTour.duration,
+  group_type: 'Private Tour',
+  group_size: `Up to ${dbTour.max_guests || 10} guests`,
+  location: dbTour.location,
+  category: dbTour.category,
+  is_safari: dbTour.is_safari,
+  is_featured: dbTour.is_featured,
+  is_active: dbTour.is_active,
+  itinerary: dbTour.itinerary || [],
+  inclusions: dbTour.inclusions || [],
+  exclusions: dbTour.exclusions || [],
+});
+
 const categories: TourCategory[] = ['Culture', 'Nature', 'Adventure', 'Wildlife', 'Beach', 'Safari', 'Luxury'];
 
 export default function AdminToursPage() {
-  const [tours, setTours] = useState<Tour[]>([]);
+  const [dbTours, setDbTours] = useState<DbTour[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [showForm, setShowForm] = useState(false);
-  const [editingTour, setEditingTour] = useState<Tour | null>(null);
+  const [editingTour, setEditingTour] = useState<DbTour | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -60,7 +85,7 @@ export default function AdminToursPage() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setTours(data || []);
+      setDbTours(data || []);
     } catch (error) {
       console.error('Error fetching tours:', error);
     } finally {
@@ -73,7 +98,7 @@ export default function AdminToursPage() {
   }, []);
 
   // Filter tours
-  const filteredTours = tours.filter(tour => {
+  const filteredTours = dbTours.filter(tour => {
     const matchesSearch = tour.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          tour.location?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || tour.category === categoryFilter;
@@ -118,7 +143,7 @@ export default function AdminToursPage() {
 
       if (error) throw error;
       
-      setTours([newTour, ...tours]);
+      setDbTours([newTour, ...dbTours]);
       setShowForm(false);
     } catch (error) {
       console.error('Error creating tour:', error);
@@ -158,7 +183,7 @@ export default function AdminToursPage() {
 
       if (error) throw error;
       
-      setTours(tours.map(t => 
+      setDbTours(dbTours.map(t => 
         t.id === editingTour.id ? { ...t, ...data, updated_at: new Date().toISOString() } : t
       ));
       setEditingTour(null);
@@ -180,7 +205,7 @@ export default function AdminToursPage() {
 
       if (error) throw error;
       
-      setTours(tours.filter(t => t.id !== id));
+      setDbTours(dbTours.filter(t => t.id !== id));
       setShowDeleteConfirm(null);
     } catch (error) {
       console.error('Error deleting tour:', error);
@@ -197,7 +222,7 @@ export default function AdminToursPage() {
 
       if (error) throw error;
       
-      setTours(tours.map(t => 
+      setDbTours(dbTours.map(t => 
         t.id === id ? { ...t, is_active: !currentStatus } : t
       ));
     } catch (error) {
@@ -214,7 +239,7 @@ export default function AdminToursPage() {
 
       if (error) throw error;
       
-      setTours(tours.map(t => 
+      setDbTours(dbTours.map(t => 
         t.id === id ? { ...t, is_featured: !currentFeatured } : t
       ));
     } catch (error) {
@@ -325,19 +350,19 @@ export default function AdminToursPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <div className="bg-white rounded-xl border border-gray-100 p-3 md:p-4">
           <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">Total</p>
-          <p className="text-xl md:text-2xl font-serif mt-1">{tours.length}</p>
+          <p className="text-xl md:text-2xl font-serif mt-1">{dbTours.length}</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 p-3 md:p-4">
           <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">Active</p>
-          <p className="text-xl md:text-2xl font-serif mt-1 text-green-600">{tours.filter(t => t.is_active).length}</p>
+          <p className="text-xl md:text-2xl font-serif mt-1 text-green-600">{dbTours.filter(t => t.is_active).length}</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 p-3 md:p-4">
           <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">Featured</p>
-          <p className="text-xl md:text-2xl font-serif mt-1 text-amber-600">{tours.filter(t => t.is_featured).length}</p>
+          <p className="text-xl md:text-2xl font-serif mt-1 text-amber-600">{dbTours.filter(t => t.is_featured).length}</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 p-3 md:p-4">
           <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">Safaris</p>
-          <p className="text-xl md:text-2xl font-serif mt-1 text-purple-600">{tours.filter(t => t.is_safari).length}</p>
+          <p className="text-xl md:text-2xl font-serif mt-1 text-purple-600">{dbTours.filter(t => t.is_safari).length}</p>
         </div>
       </div>
 
@@ -477,7 +502,7 @@ export default function AdminToursPage() {
       {/* Tour Form Modal */}
       {showForm && (
         <TourForm
-          tour={editingTour}
+          tour={editingTour ? transformDbTour(editingTour) : null}
           onSubmit={editingTour ? handleUpdateTour : handleCreateTour}
           onClose={() => { setShowForm(false); setEditingTour(null); }}
           isLoading={isLoading}
