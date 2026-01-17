@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { unstable_noStore as noStore } from 'next/cache';
 
 export interface SiteSettings {
   site_name: string;
@@ -58,8 +59,11 @@ function parseValue(key: string, value: string | null): any {
   return value;
 }
 
-// Server-side function to fetch settings
+// Server-side function to fetch settings (no caching)
 export async function getSiteSettings(): Promise<SiteSettings> {
+  // Disable Next.js caching - always fetch fresh data
+  noStore();
+  
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 

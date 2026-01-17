@@ -5,6 +5,10 @@ import { SettingsProvider } from "@/lib/settings-context";
 import { getSiteSettings } from "@/lib/site-settings";
 import { OrganizationSchema, WebsiteSchema } from "@/components/SEO/StructuredData";
 
+// Force dynamic rendering - always fetch fresh settings from database
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: {
     default: "ZANZSTAR | Best Zanzibar Tours & Safari Packages 2026",
