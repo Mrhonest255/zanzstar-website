@@ -61,7 +61,7 @@ export default function AdminPage() {
     'nature': 'bg-amber-500',
     'wildlife': 'bg-purple-500',
     'beach': 'bg-orange-500',
-    'luxury': 'bg-pink-500',
+    'premium': 'bg-pink-500',
     'safari': 'bg-green-600',
   };
 

@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import TourCard from "@/components/TourCard";
 import { tours, getCategories, getSafariTours, getPackageTours, getSingleTours } from "@/lib/tours";
 import { useState } from "react";
+import Head from "next/head";
 
 export default function ToursPage() {
   const [filter, setFilter] = useState("All");
@@ -26,8 +27,33 @@ export default function ToursPage() {
     ? filteredByType 
     : filteredByType.filter(t => t.category === filter);
 
+  const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Zanzibar Tours & Safari Packages",
+    "description": "Browse our collection of Zanzibar tours, Tanzania safaris, and day trips",
+    "url": "https://zanzstartours.com/tours",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": filteredTours.slice(0, 10).map((tour, idx) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "item": {
+          "@type": "TouristTrip",
+          "name": tour.title,
+          "description": tour.description,
+          "url": `https://zanzstartours.com/${tour.slug}`
+        }
+      }))
+    }
+  };
+
   return (
     <main className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }}
+      />
       <Navbar />
       
       <section className="pt-40 pb-20 bg-mint">

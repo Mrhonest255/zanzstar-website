@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { tours } from "@/lib/tours";
 import { notFound } from "next/navigation";
 import { useState } from "react";
+import { TourSchema, BreadcrumbSchema } from "@/components/SEO/StructuredData";
 
 export default function TourDetailPage({ params }: { params: { tourSlug: string } }) {
   const tour = tours.find(t => t.slug === params.tourSlug);
@@ -30,6 +31,23 @@ export default function TourDetailPage({ params }: { params: { tourSlug: string 
 
   return (
     <main className="bg-white">
+      <TourSchema
+        name={tour.title}
+        description={tour.description}
+        image={tour.headerImage}
+        url={`https://zanzstartours.com/${tour.slug}`}
+        price={priceNumber}
+        duration={tour.duration}
+        location={tour.location}
+        category={tour.category}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "https://zanzstartours.com" },
+          { name: "Tours", url: "https://zanzstartours.com/tours" },
+          { name: tour.title, url: `https://zanzstartours.com/${tour.slug}` }
+        ]}
+      />
       <Navbar />
       
       {/* Hero Section */}
