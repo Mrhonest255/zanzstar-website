@@ -27,13 +27,13 @@ export default function AboutPage() {
             <h2 className="text-3xl font-serif text-gray-900 mb-8">Beyond Standard Tourism</h2>
             <div className="space-y-6 text-gray-600 font-light leading-relaxed">
               <p>
-                Zanzstar was founded on a simple principle: Zanzibar deserves to be experienced in its most authentic and luxurious form. We don&apos;t just sell tours; we curate moments that last a lifetime.
+                Zanzstar was founded on a simple principle: Zanzibar deserves to be experienced in its most authentic and memorable form. We don&apos;t just sell tours; we curate moments that last a lifetime.
               </p>
               <p>
                 From the bustling markets of Stone Town to the pristine sands of Mnemba Atoll, our team of local experts ensures that every step of your journey is seamless, exclusive, and tailored to your desires.
               </p>
               <p>
-                Whether you&apos;re seeking a private yacht charter, a bespoke cultural immersion, or a luxury villa stay, Zanzstar is your trusted partner on the island.
+                Whether you&apos;re seeking a private yacht charter, a bespoke cultural immersion, or a villa stay, Zanzstar is your trusted partner on the island.
               </p>
             </div>
             <div className="mt-12 flex gap-8 border-t border-gray-100 pt-12">
@@ -43,7 +43,7 @@ export default function AboutPage() {
                </div>
                <div>
                  <span className="block text-3xl font-serif text-primary mb-1">500+</span>
-                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Luxury Experiences</span>
+                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Curated Experiences</span>
                </div>
                <div>
                  <span className="block text-3xl font-serif text-primary mb-1">100%</span>

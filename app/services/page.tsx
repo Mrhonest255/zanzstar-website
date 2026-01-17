@@ -8,22 +8,22 @@ export default function ServicesPage() {
     {
       icon: <Ship size={40} />,
       title: "Yacht Charters",
-      description: "From luxury motor yachts to traditional wooden dhows, we provide exclusive access to Zanzibar's finest private vessels."
+      description: "From modern motor yachts to traditional wooden dhows, we provide exclusive access to Zanzibar's finest private vessels."
     },
     {
       icon: <Car size={40} />,
-      title: "Luxury Transfers",
-      description: "Premium chauffeurs and high-end vehicles for airport transfers, island explorations, and executive travel."
+      title: "Private Transfers",
+      description: "Professional drivers and comfortable vehicles for airport transfers, island explorations, and executive travel."
     },
     {
       icon: <HomeIcon size={40} />,
       title: "Villa Rentals",
-      description: "Access to private estates and ultra-luxury villas that aren't listed on public booking platforms."
+      description: "Access to private estates and premium villas that aren't listed on public booking platforms."
     },
     {
       icon: <LayoutList size={40} />,
       title: "Custom Itineraries",
-      description: "Bespoke travel planning tailored to your specific interests, pace, and luxury requirements."
+      description: "Bespoke travel planning tailored to your specific interests and pace."
     },
     {
       icon: <Shield size={40} />,
@@ -56,7 +56,7 @@ export default function ServicesPage() {
           <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4">Concierge</p>
           <h1 className="text-4xl md:text-7xl font-serif text-primary mb-6">Expertly Curated</h1>
           <p className="text-gray-600 max-w-2xl mx-auto font-light italic text-[15px] leading-relaxed">
-            Our luxury lifestyle management services ensure that every aspect of your Zanzibar stay is handled with precision and local expertise.
+            Our concierge services ensure that every aspect of your Zanzibar stay is handled with precision and local expertise.
           </p>
         </div>
       </section>

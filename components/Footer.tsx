@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="col-span-1 md:col-span-1">
           <h2 className="text-2xl font-serif tracking-widest mb-6">ZANZSTAR</h2>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">
-            Zanzibar&apos;s premier luxury concierge and tour operator. We redefine island experiences through personalized service and exclusive access.
+            Zanzibar&apos;s trusted tours & concierge team. We redefine island experiences through personalized service and exclusive access.
           </p>
           <div className="flex gap-4">
             <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all">
@@ -23,7 +23,7 @@ export default function Footer() {
         <div>
            <h4 className="text-sm uppercase tracking-[0.2em] font-bold mb-8">Quick Links</h4>
            <ul className="space-y-4 text-gray-400 text-sm">
-             <li><Link href="/tours" className="hover:text-primary-light transition-colors">Luxury Tours</Link></li>
+             <li><Link href="/tours" className="hover:text-primary-light transition-colors">Zanzibar Tours</Link></li>
              <li><Link href="/services" className="hover:text-primary-light transition-colors">Concierge Services</Link></li>
              <li><Link href="/about" className="hover:text-primary-light transition-colors">Our Story</Link></li>
              <li><Link href="/contact" className="hover:text-primary-light transition-colors">Get in Touch</Link></li>
@@ -63,7 +63,7 @@ export default function Footer() {
       </div>
 
       <div className="container mx-auto px-6 pt-10 border-t border-white/5 flex flex-col md:row justify-between items-center gap-4 text-xs text-gray-500 uppercase tracking-widest font-medium">
-        <span>© 2026 Zanzstar Luxury Concierge</span>
+        <span>© 2026 Zanzstar Tours & Concierge</span>
         <div className="flex gap-8">
           <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>

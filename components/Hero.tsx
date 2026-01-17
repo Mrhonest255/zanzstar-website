@@ -37,24 +37,22 @@ export default function Hero() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-white text-[8px] sm:text-[10px] md:text-[12px] uppercase tracking-[0.3em] sm:tracking-[0.5em] md:tracking-[0.8em] font-light drop-shadow-lg text-center"
           >
-            Luxury Concierge
+            Tours & Concierge
           </motion.p>
           
           {/* Tagline */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
             className="text-white/80 text-xs sm:text-sm md:text-base mt-6 md:mt-8 text-center max-w-md px-4"
           >
-            Discover the magic of Zanzibar &amp; Tanzania with bespoke tours and luxury experiences
+            Discover the magic of Zanzibar &amp; Tanzania with bespoke tours and unique experiences
           </motion.p>
 
           {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8"
           >
             <a 

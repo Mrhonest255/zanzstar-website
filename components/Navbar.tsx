@@ -22,7 +22,7 @@ export default function Navbar() {
           <div className="border-t border-b border-gray-800 py-1 px-4">
              <span className="text-xl font-serif tracking-[0.3em] font-bold text-gray-900">ZANZSTAR</span>
           </div>
-          <span className="text-[8px] uppercase tracking-[0.5em] mt-1 text-gray-500">Luxury Concierge</span>
+           <span className="text-[8px] uppercase tracking-[0.5em] mt-1 text-gray-500">Tours & Concierge</span>
         </Link>
         
         <div className="hidden lg:flex items-center space-x-8 text-[10px] tracking-[0.15em] font-medium uppercase">

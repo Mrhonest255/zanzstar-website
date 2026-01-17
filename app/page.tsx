@@ -16,8 +16,8 @@ export default function Home() {
     },
     {
       icon: <Car size={32} />,
-      title: "Luxury Transfers",
-      description: "Arrive in style with our premium fleet and professional chauffeurs."
+      title: "Private Transfers",
+      description: "Reliable airport pickups and private transport across the island."
     },
     {
       icon: <HomeIcon size={32} />,
@@ -47,7 +47,7 @@ export default function Home() {
               Our concierge specialists ensure our clients a reliable method for all logistical services in Zanzibar, leaving you free to enjoy the very best of the Island. Zanzstar is a one stop shop for all Zanz related enquiries, connecting our clients to the most comprehensive service directory for all types of requests in Zanzibar. 
             </p>
             <p className="not-italic text-gray-400 text-sm tracking-wide">
-              Whether you are looking for the full VIP Luxury Zanzibar experience, access to the most popular island spots or secure the best value bookings, Zanzstar are here to help.
+              Whether you are looking for the full VIP Zanzibar experience, access to the most popular island spots or secure the best value bookings, Zanzstar are here to help.
             </p>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function Home() {
             <div className="space-y-6">
               <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-[#2d5a52]">Premium Standards</h3>
               <p className="text-[#666] text-[13px] leading-relaxed font-light italic">
-                Every yacht, villa, and vehicle in our portfolio is meticulously vetted to ensure it meets our rigorous luxury benchmarks.
+                Every yacht, villa, and vehicle in our portfolio is meticulously vetted to ensure it meets our quality benchmarks.
               </p>
             </div>
             <div className="space-y-6">
@@ -112,7 +112,7 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-primary mb-4">Discovery</p>
-            <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mb-4 tracking-tight">Luxury Experiences</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mb-4 tracking-tight">Featured Experiences</h2>
             <div className="w-12 h-[1px] bg-primary mx-auto opacity-30 mt-8"></div>
           </div>
 
@@ -158,7 +158,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Luxury CTA */}
+      {/* CTA */}
       <section className="py-32 relative overflow-hidden bg-primary overflow-hidden">
         <div className="absolute inset-0 opacity-10">
            <img 

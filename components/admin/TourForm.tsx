@@ -11,6 +11,16 @@ interface TourFormProps {
   isLoading?: boolean;
 }
 
+const categoryLabels: Record<TourCategory, string> = {
+  Culture: 'Culture',
+  Nature: 'Nature',
+  Adventure: 'Adventure',
+  Wildlife: 'Wildlife',
+  Beach: 'Beach',
+  Safari: 'Safari',
+  Luxury: 'Premium',
+};
+
 const categories: TourCategory[] = ['Culture', 'Nature', 'Adventure', 'Wildlife', 'Beach', 'Safari', 'Luxury'];
 
 export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFormProps) {
@@ -20,6 +30,7 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
     description: '',
     image: '',
     header_image: '',
+    gallery: [],
     price: 0,
     price_display: '',
     duration: '',
@@ -47,6 +58,7 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
         description: tour.description,
         image: tour.image,
         header_image: tour.header_image,
+        gallery: (tour.gallery || []).slice(0, 4),
         price: tour.price,
         price_display: tour.price_display,
         duration: tour.duration,
@@ -134,13 +146,16 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(formData);
+    const cleaned = {
+      ...formData,
+      gallery: (formData.gallery || []).filter(Boolean).slice(0, 4),
+    } as TourInsert;
+    await onSubmit(cleaned);
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center overflow-y-auto py-10">
       <div className="bg-white rounded-3xl w-full max-w-4xl mx-4 my-auto">
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <h2 className="text-2xl font-serif">{tour ? 'Edit Tour' : 'Create New Tour'}</h2>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -148,9 +163,7 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-8 max-h-[70vh] overflow-y-auto">
-          {/* Images */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Thumbnail Image</label>
@@ -172,7 +185,39 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
             </div>
           </div>
 
-          {/* Basic Info */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <label className="block text-sm font-medium text-gray-700">Gallery Images (max 4)</label>
+              <span className="text-xs text-gray-400">{(formData.gallery || []).filter(Boolean).length}/4</span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[0, 1, 2, 3].map((idx) => (
+                <div key={idx}>
+                  <ImageUpload
+                    value={(formData.gallery || [])[idx] || ''}
+                    onChange={(url) => {
+                      setFormData(prev => {
+                        const next = [...(prev.gallery || [])];
+                        next[idx] = url;
+                        return { ...prev, gallery: next.slice(0, 4) };
+                      });
+                    }}
+                    onRemove={() => {
+                      setFormData(prev => {
+                        const next = [...(prev.gallery || [])];
+                        next[idx] = '';
+                        return { ...prev, gallery: next };
+                      });
+                    }}
+                    aspectRatio="square"
+                    label={`Image ${idx + 1}`}
+                    folder="tours/gallery"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Tour Title *</label>
@@ -219,8 +264,8 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
                 required
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               >
-                {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>{categoryLabels[category]}</option>
                 ))}
               </select>
             </div>
@@ -317,7 +362,6 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
             </div>
           </div>
 
-          {/* Toggles */}
           <div className="flex flex-wrap gap-6">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -351,7 +395,6 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
             </label>
           </div>
 
-          {/* Itinerary */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">Itinerary</label>
             <div className="space-y-2 mb-3">
@@ -386,7 +429,6 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
             </div>
           </div>
 
-          {/* Inclusions */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">Inclusions</label>
             <div className="flex flex-wrap gap-2 mb-3">
@@ -414,7 +456,6 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
             </div>
           </div>
 
-          {/* Exclusions */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">Exclusions</label>
             <div className="flex flex-wrap gap-2 mb-3">
@@ -443,7 +484,6 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
           </div>
         </form>
 
-        {/* Footer */}
         <div className="flex items-center justify-end gap-4 p-6 border-t border-gray-100">
           <button
             type="button"
@@ -457,14 +497,7 @@ export default function TourForm({ tour, onSubmit, onClose, isLoading }: TourFor
             disabled={isLoading}
             className="px-8 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center gap-2"
           >
-            {isLoading ? (
-              <>
-                <span className="animate-spin">⏳</span>
-                Saving...
-              </>
-            ) : (
-              tour ? 'Update Tour' : 'Create Tour'
-            )}
+            {isLoading ? 'Saving...' : (tour ? 'Update Tour' : 'Create Tour')}
           </button>
         </div>
       </div>

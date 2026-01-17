@@ -19,6 +19,7 @@ export interface Tour {
   description: string;
   image: string;
   header_image: string;
+  gallery?: string[];
   price: number;
   price_display: string;
   duration: string;
@@ -54,6 +55,7 @@ export interface TourInsert {
   description: string;
   image?: string;
   header_image?: string;
+  gallery?: string[];
   price: number;
   price_display: string;
   duration: string;

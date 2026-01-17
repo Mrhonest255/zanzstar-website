@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   Save, 
   Globe, 
@@ -19,6 +19,7 @@ import {
   CheckCircle
 } from "lucide-react";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { createAuthClient } from "@/lib/supabase/auth-client";
 
 interface SiteSettings {
   site_name: string;
@@ -47,7 +48,7 @@ interface SiteSettings {
 
 const defaultSettings: SiteSettings = {
   site_name: 'ZANZSTAR',
-  tagline: 'Premium Tours & Safari',
+  tagline: 'Tours & Safari',
   contact_email: 'info@zanzstar.com',
   contact_phone: '+255 123 456 789',
   whatsapp_number: '+255 123 456 789',
@@ -66,7 +67,7 @@ const defaultSettings: SiteSettings = {
   email_notifications: true,
   sms_notifications: false,
   meta_title: 'ZANZSTAR - Premium Zanzibar Tours & Safari',
-  meta_description: 'Experience the ultimate Zanzibar adventure with ZANZSTAR. Luxury tours, safaris, and exclusive experiences.',
+  meta_description: 'Experience the ultimate Zanzibar adventure with ZANZSTAR. Tours, safaris, and exclusive experiences.',
   google_analytics_id: '',
 };
 
@@ -75,6 +76,57 @@ export default function AdminSettingsPage() {
   const [activeTab, setActiveTab] = useState<'general' | 'contact' | 'social' | 'appearance' | 'seo' | 'notifications'>('general');
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+  const supabase = createAuthClient();
+
+  const booleanKeys = new Set<keyof SiteSettings>([
+    'booking_enabled',
+    'maintenance_mode',
+    'email_notifications',
+    'sms_notifications',
+  ]);
+
+  const typeForKey = (key: keyof SiteSettings): string => (booleanKeys.has(key) ? 'boolean' : 'string');
+  const serializeValue = (key: keyof SiteSettings, value: any): string => {
+    if (booleanKeys.has(key)) return value ? 'true' : 'false';
+    return (value ?? '').toString();
+  };
+
+  const parseValue = (key: string, value: string | null): any => {
+    if (value === null) return '';
+    if (key === 'booking_enabled' || key === 'maintenance_mode' || key === 'email_notifications' || key === 'sms_notifications') {
+      return value === 'true';
+    }
+    return value;
+  };
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('site_settings')
+          .select('key,value');
+
+        if (error) throw error;
+
+        const next = { ...defaultSettings };
+        (data || []).forEach((row: any) => {
+          const key = row.key as keyof SiteSettings;
+          if (key in next) {
+            (next as any)[key] = parseValue(row.key, row.value);
+          }
+        });
+        setSettings(next);
+      } catch (err) {
+        console.error('Error loading site settings:', err);
+      } finally {
+        setIsLoadingSettings(false);
+      }
+    };
+
+    loadSettings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (field: keyof SiteSettings, value: any) => {
     setSettings({ ...settings, [field]: value });
@@ -83,11 +135,29 @@ export default function AdminSettingsPage() {
 
   const handleSave = async () => {
     setIsSaving(true);
-    // TODO: Replace with actual Supabase save
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsSaving(false);
-    setSaveStatus('success');
-    setTimeout(() => setSaveStatus('idle'), 3000);
+    setSaveStatus('idle');
+    try {
+      const entries = Object.entries(settings) as Array<[keyof SiteSettings, any]>;
+      const payload = entries.map(([key, value]) => ({
+        key,
+        value: serializeValue(key, value),
+        type: typeForKey(key),
+      }));
+
+      const { error } = await supabase
+        .from('site_settings')
+        .upsert(payload, { onConflict: 'key' });
+
+      if (error) throw error;
+      setSaveStatus('success');
+      setTimeout(() => setSaveStatus('idle'), 3000);
+    } catch (err) {
+      console.error('Error saving site settings:', err);
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus('idle'), 3000);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const tabs = [
@@ -108,6 +178,12 @@ export default function AdminSettingsPage() {
           <p className="text-gray-500 text-sm mt-1">Configure your website settings</p>
         </div>
         <div className="flex items-center gap-4">
+          {isLoadingSettings && (
+            <span className="flex items-center gap-2 text-gray-500 text-sm">
+              <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+              Loading...
+            </span>
+          )}
           {saveStatus === 'success' && (
             <span className="flex items-center gap-2 text-green-600 text-sm">
               <CheckCircle size={18} /> Saved successfully

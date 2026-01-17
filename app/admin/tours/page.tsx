@@ -46,6 +46,7 @@ const transformDbTour = (dbTour: DbTour): Tour => ({
   description: dbTour.description,
   image: dbTour.image_url || '',
   header_image: dbTour.header_image_url || '',
+  gallery: dbTour.gallery || [],
   price: dbTour.price,
   price_display: `From $${dbTour.price}`,
   duration: dbTour.duration,
@@ -60,6 +61,18 @@ const transformDbTour = (dbTour: DbTour): Tour => ({
   inclusions: dbTour.inclusions || [],
   exclusions: dbTour.exclusions || [],
 });
+
+const categoryLabels: Record<TourCategory, string> = {
+  Culture: 'Culture',
+  Nature: 'Nature',
+  Adventure: 'Adventure',
+  Wildlife: 'Wildlife',
+  Beach: 'Beach',
+  Safari: 'Safari',
+  Luxury: 'Premium',
+};
+
+const formatCategory = (category: TourCategory) => categoryLabels[category] ?? category;
 
 const categories: TourCategory[] = ['Culture', 'Nature', 'Adventure', 'Wildlife', 'Beach', 'Safari', 'Luxury'];
 
@@ -411,7 +424,7 @@ export default function AdminToursPage() {
 
               {/* Category */}
               <span className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium">
-                {tour.category}
+                {formatCategory(tour.category)}
               </span>
 
               {/* Price */}
