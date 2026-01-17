@@ -3,8 +3,10 @@ import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from "lucide-react";
+import { useSettings } from "@/lib/settings-context";
 
 export default function ContactPage() {
+  const { settings } = useSettings();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -66,7 +68,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="block text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">Call Us</span>
-                      <a href="tel:+255656443740" className="text-gray-800 font-medium hover:text-primary">+255 656 443 740</a>
+                      <a href={`tel:${settings.contact_phone.replace(/\s/g, '')}`} className="text-gray-800 font-medium hover:text-primary">{settings.contact_phone}</a>
                     </div>
                  </div>
                  <div className="flex gap-6">
@@ -75,7 +77,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="block text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">Email Us</span>
-                      <a href="mailto:info@zanzstartours.com" className="text-gray-800 font-medium hover:text-primary">info@zanzstartours.com</a>
+                      <a href={`mailto:${settings.contact_email}`} className="text-gray-800 font-medium hover:text-primary">{settings.contact_email}</a>
                     </div>
                  </div>
                  <div className="flex gap-6">
@@ -84,7 +86,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="block text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">Visit Us</span>
-                      <span className="text-gray-800 font-medium">Stone Town, Zanzibar</span>
+                      <span className="text-gray-800 font-medium">{settings.address}</span>
                     </div>
                  </div>
               </div>

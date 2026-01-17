@@ -1,22 +1,40 @@
+"use client";
 import Link from "next/link";
-import { Instagram, Facebook, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Facebook, Mail, Phone, MapPin, Twitter, Youtube } from "lucide-react";
+import { useSettings } from "@/lib/settings-context";
 
 export default function Footer() {
+  const { settings } = useSettings();
+
   return (
     <footer className="bg-gray-900 text-white pt-20 pb-10">
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
         <div className="col-span-1 md:col-span-1">
-          <h2 className="text-2xl font-serif tracking-widest mb-6">ZANZSTAR</h2>
+          <h2 className="text-2xl font-serif tracking-widest mb-6">{settings.site_name}</h2>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">
             Zanzibar&apos;s trusted tours & concierge team. We redefine island experiences through personalized service and exclusive access.
           </p>
           <div className="flex gap-4">
-            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all">
-              <Instagram size={18} />
-            </a>
-            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all">
-              <Facebook size={18} />
-            </a>
+            {settings.instagram_url && (
+              <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all">
+                <Instagram size={18} />
+              </a>
+            )}
+            {settings.facebook_url && (
+              <a href={settings.facebook_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all">
+                <Facebook size={18} />
+              </a>
+            )}
+            {settings.twitter_url && (
+              <a href={settings.twitter_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all">
+                <Twitter size={18} />
+              </a>
+            )}
+            {settings.youtube_url && (
+              <a href={settings.youtube_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all">
+                <Youtube size={18} />
+              </a>
+            )}
           </div>
         </div>
 
@@ -35,15 +53,15 @@ export default function Footer() {
            <ul className="space-y-6 text-gray-400 text-sm">
              <li className="flex gap-4">
                <Phone size={18} className="text-primary-light flex-shrink-0" />
-               <a href="tel:+255656443740" className="hover:text-primary-light transition-colors">+255 656 443 740</a>
+               <a href={`tel:${settings.contact_phone.replace(/\s/g, '')}`} className="hover:text-primary-light transition-colors">{settings.contact_phone}</a>
              </li>
              <li className="flex gap-4">
                <Mail size={18} className="text-primary-light flex-shrink-0" />
-               <span>info@zanzstar.com</span>
+               <a href={`mailto:${settings.contact_email}`} className="hover:text-primary-light transition-colors">{settings.contact_email}</a>
              </li>
              <li className="flex gap-4">
                <MapPin size={18} className="text-primary-light flex-shrink-0" />
-               <span>Stone Town, Zanzibar</span>
+               <span>{settings.address}</span>
              </li>
            </ul>
         </div>
@@ -63,7 +81,7 @@ export default function Footer() {
       </div>
 
       <div className="container mx-auto px-6 pt-10 border-t border-white/5 flex flex-col md:row justify-between items-center gap-4 text-xs text-gray-500 uppercase tracking-widest font-medium">
-        <span>© 2026 Zanzstar Tours & Concierge</span>
+        <span>© {new Date().getFullYear()} {settings.site_name} Tours & Concierge</span>
         <div className="flex gap-8">
           <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>

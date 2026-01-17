@@ -1,7 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
+import { useSettings } from "@/lib/settings-context";
 
 export default function Hero() {
+  const { settings } = useSettings();
+
   return (
     <div className="relative h-screen min-h-[600px] flex flex-col items-center justify-center overflow-hidden pt-24">
       {/* Background Video */}
@@ -28,7 +31,7 @@ export default function Hero() {
             className="border-t border-b border-white py-3 md:py-4 px-4 sm:px-8 md:px-12 mb-2"
           >
             <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-serif tracking-[0.15em] sm:tracking-[0.25em] md:tracking-[0.4em] font-bold text-white drop-shadow-2xl text-center whitespace-nowrap">
-              ZANZSTAR
+              {settings.site_name}
             </h1>
           </motion.div>
           <motion.p 
@@ -37,7 +40,7 @@ export default function Hero() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-white text-[8px] sm:text-[10px] md:text-[12px] uppercase tracking-[0.3em] sm:tracking-[0.5em] md:tracking-[0.8em] font-light drop-shadow-lg text-center"
           >
-            Tours & Concierge
+            {settings.tagline}
           </motion.p>
           
           {/* Tagline */}

@@ -1,10 +1,13 @@
 "use client";
-import { MessageCircle } from "lucide-react";
+import { useSettings } from "@/lib/settings-context";
 
 export default function WhatsAppButton() {
+  const { settings } = useSettings();
+  const whatsappNumber = settings.whatsapp_number.replace(/[^0-9]/g, '');
+  
   return (
     <a
-      href="https://wa.me/255656443740?text=Hello%20Zanzstar!%20I%20would%20like%20to%20inquire%20about%20your%20tours."
+      href={`https://wa.me/${whatsappNumber}?text=Hello%20${encodeURIComponent(settings.site_name)}!%20I%20would%20like%20to%20inquire%20about%20your%20tours.`}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#128C7E] text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center gap-3 group"

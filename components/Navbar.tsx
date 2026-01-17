@@ -2,10 +2,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Instagram, Facebook } from "lucide-react";
+import { useSettings } from "@/lib/settings-context";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { settings } = useSettings();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,9 +22,9 @@ export default function Navbar() {
       <div className="container mx-auto px-10 flex justify-between items-center">
         <Link href="/" className="flex flex-col items-center group">
           <div className="border-t border-b border-gray-800 py-1 px-4">
-             <span className="text-xl font-serif tracking-[0.3em] font-bold text-gray-900">ZANZSTAR</span>
+             <span className="text-xl font-serif tracking-[0.3em] font-bold text-gray-900">{settings.site_name}</span>
           </div>
-           <span className="text-[8px] uppercase tracking-[0.5em] mt-1 text-gray-500">Tours & Concierge</span>
+           <span className="text-[8px] uppercase tracking-[0.5em] mt-1 text-gray-500">{settings.tagline}</span>
         </Link>
         
         <div className="hidden lg:flex items-center space-x-8 text-[10px] tracking-[0.15em] font-medium uppercase">

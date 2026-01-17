@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { SettingsProvider } from "@/lib/settings-context";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
   title: {
@@ -43,11 +45,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en">
       <head>
@@ -58,7 +62,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
       </head>
       <body className="font-sans">
-        {children}
+        <SettingsProvider initialSettings={settings}>
+          {children}
+        </SettingsProvider>
         <WhatsAppButton />
       </body>
     </html>
