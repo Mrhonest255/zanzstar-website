@@ -16,6 +16,12 @@ VALUES (
   file_size_limit = 5242880,
   allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
+-- Drop existing storage policies first
+DROP POLICY IF EXISTS "Public read access for tour images" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated users can upload tour images" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated users can update tour images" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated users can delete tour images" ON storage.objects;
+
 -- Allow public read access to tour images
 CREATE POLICY "Public read access for tour images"
 ON storage.objects FOR SELECT
@@ -78,6 +84,10 @@ CREATE TRIGGER update_customers_updated_at
 -- ============================================
 ALTER TABLE tours ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies first to avoid conflicts
+DROP POLICY IF EXISTS "Public can view active tours" ON tours;
+DROP POLICY IF EXISTS "Admins can do everything with tours" ON tours;
+
 -- Allow public read access to active tours
 CREATE POLICY "Public can view active tours"
 ON tours FOR SELECT
@@ -92,6 +102,11 @@ USING (auth.role() = 'authenticated');
 -- RLS Policies for bookings table
 -- ============================================
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies first
+DROP POLICY IF EXISTS "Admins can view all bookings" ON bookings;
+DROP POLICY IF EXISTS "Admins can manage bookings" ON bookings;
+DROP POLICY IF EXISTS "Anyone can create bookings" ON bookings;
 
 -- Allow authenticated users to view all bookings
 CREATE POLICY "Admins can view all bookings"
@@ -112,6 +127,11 @@ WITH CHECK (true);
 -- RLS Policies for customers table
 -- ============================================
 ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies first
+DROP POLICY IF EXISTS "Admins can view all customers" ON customers;
+DROP POLICY IF EXISTS "Admins can manage customers" ON customers;
+DROP POLICY IF EXISTS "Anyone can create customers" ON customers;
 
 -- Allow authenticated users to view all customers
 CREATE POLICY "Admins can view all customers"
