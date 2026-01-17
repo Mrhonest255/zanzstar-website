@@ -103,25 +103,21 @@ export default function AdminSettingsPage() {
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        console.log('Loading settings from database...');
-        const { data, error } = await supabase
-          .from('site_settings')
-          .select('key,value');
-
-        console.log('Settings data:', data);
-        console.log('Settings error:', error);
-
-        if (error) throw error;
-
-        const next = { ...defaultSettings };
-        (data || []).forEach((row: any) => {
-          const key = row.key as keyof SiteSettings;
-          if (key in next) {
-            (next as any)[key] = parseValue(row.key, row.value);
-          }
-        });
-        console.log('Parsed settings:', next);
-        setSettings(next);
+        // Use API route to fetch settings (more reliable)
+        const response = await fetch('/api/settings', { cache: 'no-store' });
+        const data = await response.json();
+        
+        if (response.ok && data && !data.error) {
+          const next = { ...defaultSettings };
+          Object.keys(data).forEach((key) => {
+            if (key in next) {
+              (next as any)[key] = parseValue(key, data[key]);
+            }
+          });
+          setSettings(next);
+        } else {
+          console.error('API error:', data?.error);
+        }
       } catch (err) {
         console.error('Error loading site settings:', err);
       } finally {

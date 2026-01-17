@@ -1,6 +1,5 @@
 "use client";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { createAuthClient } from "@/lib/supabase/auth-client";
 
 export interface SiteSettings {
   site_name: string;
@@ -79,24 +78,22 @@ function parseValue(key: string, value: string | null): any {
 export function SettingsProvider({ children, initialSettings }: { children: ReactNode; initialSettings?: SiteSettings }) {
   const [settings, setSettings] = useState<SiteSettings>(initialSettings || defaultSettings);
   const [isLoading, setIsLoading] = useState(!initialSettings);
-  const supabase = createAuthClient();
 
   const fetchSettings = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_settings')
-        .select('key,value');
+      // Use API route for more reliable fetching
+      const response = await fetch('/api/settings', { cache: 'no-store' });
+      const data = await response.json();
 
-      if (error) throw error;
-
-      const next = { ...defaultSettings };
-      (data || []).forEach((row: any) => {
-        const key = row.key as keyof SiteSettings;
-        if (key in next) {
-          (next as any)[key] = parseValue(row.key, row.value);
-        }
-      });
-      setSettings(next);
+      if (response.ok && data && !data.error) {
+        const next = { ...defaultSettings };
+        Object.keys(data).forEach((key) => {
+          if (key in next) {
+            (next as any)[key] = parseValue(key, data[key]);
+          }
+        });
+        setSettings(next);
+      }
     } catch (err) {
       console.error('Error fetching site settings:', err);
     } finally {
