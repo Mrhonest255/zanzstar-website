@@ -10,7 +10,7 @@ export default function Home() {
 
   const services = [
     {
-      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800",
+      image: "https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=center,quality=60,width=450,height=450,dpr=2/tour_img/b7692e2c172b4885e768ed2c7fd0f3e57777009f37560902411717afec2192b3.jpeg",
       title: "Private Transfers",
       description: "Reliable airport pickups and private transport across the island."
     },
