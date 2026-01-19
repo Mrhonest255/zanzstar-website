@@ -2,6 +2,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { MapPin, Users, Bed, Maximize } from "lucide-react";
+import Image from "next/image";
 
 export default function VillasPage() {
   const villas = [
@@ -11,7 +12,7 @@ export default function VillasPage() {
       beds: 5,
       guests: 10,
       size: "450 sqm",
-      image: "https://images.unsplash.com/photo-1544644181-14e3532c6680?q=80&w=1200",
+      image: "https://images.pexels.com/photos/1268871/pexels-photo-1268871.jpeg?auto=compress&cs=tinysrgb&w=1200",
       price: "$1,200 / night"
     },
     {
@@ -20,7 +21,7 @@ export default function VillasPage() {
       beds: 4,
       guests: 8,
       size: "380 sqm",
-      image: "https://images.unsplash.com/photo-1620330101962-d35ed5f21223?q=80&w=1200",
+      image: "https://images.pexels.com/photos/2506988/pexels-photo-2506988.jpeg?auto=compress&cs=tinysrgb&w=1200",
       price: "$950 / night"
     },
     {
@@ -29,7 +30,7 @@ export default function VillasPage() {
       beds: 6,
       guests: 12,
       size: "600 sqm",
-      image: "https://images.unsplash.com/photo-1606240724602-5b21f8963974?q=80&w=1200",
+      image: "https://images.pexels.com/photos/1450363/pexels-photo-1450363.jpeg?auto=compress&cs=tinysrgb&w=1200",
       price: "$2,100 / night"
     }
   ];
@@ -53,7 +54,12 @@ export default function VillasPage() {
             {villas.map((villa, index) => (
               <div key={index} className="group cursor-pointer">
                 <div className="relative h-80 overflow-hidden rounded-2xl mb-6 shadow-lg">
-                  <img src={villa.image} alt={villa.name} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <Image 
+                    src={villa.image} 
+                    alt={villa.name} 
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                  />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full font-serif text-primary font-bold shadow-sm">
                     {villa.price}
                   </div>

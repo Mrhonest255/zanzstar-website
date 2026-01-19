@@ -1,49 +1,49 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Ship, Car, Home as HomeIcon, LayoutList, Shield, Music, Utensils, Zap } from "lucide-react";
+import Image from "next/image";
 
 export default function ServicesPage() {
   const allServices = [
     {
-      icon: <Ship size={40} />,
+      image: "https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=600",
       title: "Yacht Charters",
       description: "From modern motor yachts to traditional wooden dhows, we provide exclusive access to Zanzibar's finest private vessels."
     },
     {
-      icon: <Car size={40} />,
+      image: "https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=center,quality=60,width=450,height=450,dpr=2/tour_img/b7692e2c172b4885e768ed2c7fd0f3e57777009f37560902411717afec2192b3.jpeg",
       title: "Private Transfers",
       description: "Professional drivers and comfortable vehicles for airport transfers, island explorations, and executive travel."
     },
     {
-      icon: <HomeIcon size={40} />,
+      image: "https://images.pexels.com/photos/1268871/pexels-photo-1268871.jpeg?auto=compress&cs=tinysrgb&w=600",
       title: "Villa Rentals",
       description: "Access to private estates and premium villas that aren't listed on public booking platforms."
     },
     {
-      icon: <LayoutList size={40} />,
+      image: "https://images.pexels.com/photos/3769138/pexels-photo-3769138.jpeg?auto=compress&cs=tinysrgb&w=600",
       title: "Custom Itineraries",
       description: "Bespoke travel planning tailored to your specific interests and pace."
     },
     {
-      icon: <Shield size={40} />,
-      title: "Security & Protection",
-      description: "Discrete and professional security services for VIP guests and high-profile delegations."
-    },
-    {
-      icon: <Music size={40} />,
+      image: "https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg?auto=compress&cs=tinysrgb&w=600",
       title: "Event Planning",
       description: "Exclusive weddings, anniversaries, and corporate retreats set against the stunning backdrop of the Indian Ocean."
     },
     {
-      icon: <Utensils size={40} />,
+      image: "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=600",
       title: "Private Chefs",
       description: "World-class culinary experiences delivered in the privacy of your villa or on a remote sandbank."
     },
     {
-      icon: <Zap size={40} />,
-      title: "Fast-Track Services",
-      description: "Seamless airport VIP handling and fast-track immigration services for a stress-free arrival."
+      image: "https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg?auto=compress&cs=tinysrgb&w=600",
+      title: "Spice Tours",
+      description: "Explore Zanzibar's famous spice farms and discover cloves, nutmeg, cinnamon and more."
+    },
+    {
+      image: "https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=600",
+      title: "Beach Experiences",
+      description: "Private beach setups, sandbank picnics, and exclusive coastal experiences."
     }
   ];
 
@@ -63,14 +63,21 @@ export default function ServicesPage() {
 
       <section className="py-32">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {allServices.map((service, index) => (
-              <div key={index} className="group p-10 bg-white border border-gray-100 rounded-[2rem] hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-2">
-                <div className="w-20 h-20 bg-mint rounded-2xl flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-white transition-all duration-500">
-                  {service.icon}
+              <div key={index} className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-2">
+                <div className="relative h-48 overflow-hidden">
+                  <Image 
+                    src={service.image} 
+                    alt={service.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
-                <h3 className="text-xl font-serif mb-4 text-gray-900 tracking-tight">{service.title}</h3>
-                <p className="text-gray-500 text-[13px] leading-relaxed font-light italic">{service.description}</p>
+                <div className="p-6">
+                  <h3 className="text-lg font-serif mb-3 text-primary tracking-tight">{service.title}</h3>
+                  <p className="text-gray-500 text-[12px] leading-relaxed font-light">{service.description}</p>
+                </div>
               </div>
             ))}
           </div>

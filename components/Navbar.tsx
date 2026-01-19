@@ -31,7 +31,6 @@ export default function Navbar() {
           {[
             { name: "Home", href: "/" },
             { name: "What To Do", href: "/tours" },
-            { name: "Arrangements", href: "/arrangements" },
             { name: "Where To Stay", href: "/villas" },
             { name: "Services", href: "/services" },
             { name: "Track Booking", href: "/track-booking" }
@@ -66,7 +65,6 @@ export default function Navbar() {
           {[
             { name: "Home", href: "/" },
             { name: "What To Do", href: "/tours" },
-            { name: "Arrangements", href: "/arrangements" },
             { name: "Where To Stay", href: "/villas" },
             { name: "Services", href: "/services" },
             { name: "Track Booking", href: "/track-booking" },
