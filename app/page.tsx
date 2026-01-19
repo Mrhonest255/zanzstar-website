@@ -2,30 +2,25 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TourCard from "@/components/TourCard";
 import Footer from "@/components/Footer";
-import { Ship, Car, Home as HomeIcon, LayoutList } from "lucide-react";
 import { tours } from "@/lib/tours";
+import Image from "next/image";
 
 export default function Home() {
   const featuredTours = tours.slice(0, 3); // Get first 3 tours
 
   const services = [
     {
-      icon: <Ship size={32} />,
-      title: "Yacht Charters",
-      description: "Exclusive access to the finest vessels in Zanzibar for private cruises."
-    },
-    {
-      icon: <Car size={32} />,
+      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800",
       title: "Private Transfers",
       description: "Reliable airport pickups and private transport across the island."
     },
     {
-      icon: <HomeIcon size={32} />,
+      image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800",
       title: "Villa Rentals",
       description: "Curated selection of the most private and luxurious stays on the coast."
     },
     {
-      icon: <LayoutList size={32} />,
+      image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800",
       title: "Custom Itineraries",
       description: "Bespoke planning for your entire stay, down to the smallest detail."
     }
@@ -44,7 +39,7 @@ export default function Home() {
           </h2>
           <div className="space-y-8 text-[#777] font-light leading-relaxed text-[17px] max-w-4xl mx-auto italic">
             <p>
-              Our concierge specialists ensure our clients a reliable method for all logistical services in Zanzibar, leaving you free to enjoy the very best of the Island. Zanzstar is a one stop shop for all Zanz related enquiries, connecting our clients to the most comprehensive service directory for all types of requests in Zanzibar. 
+              Our travel specialists ensure our clients a reliable method for all logistical services in Zanzibar, leaving you free to enjoy the very best of the Island. Zanzstar is a one stop shop for all Zanz related enquiries, connecting our clients to the most comprehensive service directory for all types of requests in Zanzibar. 
             </p>
             <p className="not-italic text-gray-400 text-sm tracking-wide">
               Whether you are looking for the full VIP Zanzibar experience, access to the most popular island spots or secure the best value bookings, Zanzstar are here to help.
@@ -74,7 +69,7 @@ export default function Home() {
               </p>
             </div>
             <div className="space-y-6">
-              <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-[#2d5a52]">24/7 Concierge Support</h3>
+              <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-[#2d5a52]">24/7 Travel Support</h3>
               <p className="text-[#666] text-[13px] leading-relaxed font-light italic">
                 From the moment you arrive until your departure, our team is on hand to handle every request, no matter how small.
               </p>
@@ -87,20 +82,26 @@ export default function Home() {
       <section id="services" className="py-32 bg-white">
         <div className="container mx-auto px-6 text-center max-w-5xl">
           <h2 className="text-4xl md:text-5xl font-serif text-primary mb-10 tracking-tight">
-            Our Zanzibar Concierge Services
+            Our Zanzibar Travel Services
           </h2>
           <p className="text-[#888] font-light italic text-[15px] mb-24 max-w-3xl mx-auto leading-relaxed">
             Zanzstar specialists have the knowledge and resources to make your request a reality with constant transparency and support. We make sure expectations are exceeded with every request, no matter the size.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {services.map((service, index) => (
               <div key={index} className="text-center group">
-                <div className="w-16 h-16 bg-white border border-gray-100 rounded-full flex items-center justify-center text-primary mx-auto mb-6 transition-all duration-500 group-hover:bg-primary group-hover:text-white">
-                  {service.icon}
+                <div className="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden shadow-lg transition-all duration-500 group-hover:shadow-2xl group-hover:scale-105">
+                  <Image 
+                    src={service.image} 
+                    alt={service.title}
+                    width={192}
+                    height={192}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <h3 className="text-lg font-serif mb-3 text-gray-800 tracking-tight">{service.title}</h3>
-                <p className="text-gray-500 text-[11px] leading-relaxed font-light">{service.description}</p>
+                <h3 className="text-xl font-serif mb-3 text-primary tracking-tight">{service.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed font-light max-w-xs mx-auto">{service.description}</p>
               </div>
             ))}
           </div>

@@ -53,10 +53,10 @@ export default function ServicesPage() {
       
       <section className="pt-40 pb-20 bg-mint">
         <div className="container mx-auto px-6 text-center">
-          <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4">Concierge</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4">Services</p>
           <h1 className="text-4xl md:text-7xl font-serif text-primary mb-6">Expertly Curated</h1>
           <p className="text-gray-600 max-w-2xl mx-auto font-light italic text-[15px] leading-relaxed">
-            Our concierge services ensure that every aspect of your Zanzibar stay is handled with precision and local expertise.
+            Our travel services ensure that every aspect of your Zanzibar stay is handled with precision and local expertise.
           </p>
         </div>
       </section>

@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="col-span-1 md:col-span-1">
           <h2 className="text-2xl font-serif tracking-widest mb-6">{settings.site_name}</h2>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">
-            Zanzibar&apos;s trusted tours & concierge team. We redefine island experiences through personalized service and exclusive access.
+            Zanzibar&apos;s trusted tours & travel team. We redefine island experiences through personalized service and exclusive access.
           </p>
           <div className="flex gap-4">
             {settings.instagram_url && (
@@ -42,7 +42,7 @@ export default function Footer() {
            <h4 className="text-sm uppercase tracking-[0.2em] font-bold mb-8">Quick Links</h4>
            <ul className="space-y-4 text-gray-400 text-sm">
              <li><Link href="/tours" className="hover:text-primary-light transition-colors">Zanzibar Tours</Link></li>
-             <li><Link href="/services" className="hover:text-primary-light transition-colors">Concierge Services</Link></li>
+             <li><Link href="/services" className="hover:text-primary-light transition-colors">Travel Services</Link></li>
              <li><Link href="/about" className="hover:text-primary-light transition-colors">Our Story</Link></li>
              <li><Link href="/contact" className="hover:text-primary-light transition-colors">Get in Touch</Link></li>
            </ul>
@@ -81,7 +81,7 @@ export default function Footer() {
       </div>
 
       <div className="container mx-auto px-6 pt-10 border-t border-white/5 flex flex-col md:row justify-between items-center gap-4 text-xs text-gray-500 uppercase tracking-widest font-medium">
-        <span>© {new Date().getFullYear()} {settings.site_name} Tours & Concierge</span>
+        <span>© {new Date().getFullYear()} {settings.site_name} Tours & Travel</span>
         <div className="flex gap-8">
           <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>

@@ -262,7 +262,7 @@ export default function TourDetailPage({ params }: { params: { tourSlug: string 
                       <div className="w-8 h-8 rounded-full bg-mint flex items-center justify-center text-primary flex-shrink-0">
                         <Smartphone size={14} />
                       </div>
-                      <p className="text-[11px] leading-relaxed text-gray-500 italic">24/7 Concierge Support during your entire stay.</p>
+                      <p className="text-[11px] leading-relaxed text-gray-500 italic">24/7 Travel Support during your entire stay.</p>
                     </div>
                     <div className="flex gap-4">
                       <div className="w-8 h-8 rounded-full bg-mint flex items-center justify-center text-primary flex-shrink-0">

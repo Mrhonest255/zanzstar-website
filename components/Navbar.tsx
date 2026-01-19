@@ -33,7 +33,7 @@ export default function Navbar() {
             { name: "What To Do", href: "/tours" },
             { name: "Arrangements", href: "/arrangements" },
             { name: "Where To Stay", href: "/villas" },
-            { name: "Concierge", href: "/services" },
+            { name: "Services", href: "/services" },
             { name: "Track Booking", href: "/track-booking" }
           ].map((item) => (
             <Link 
@@ -68,7 +68,7 @@ export default function Navbar() {
             { name: "What To Do", href: "/tours" },
             { name: "Arrangements", href: "/arrangements" },
             { name: "Where To Stay", href: "/villas" },
-            { name: "Concierge", href: "/services" },
+            { name: "Services", href: "/services" },
             { name: "Track Booking", href: "/track-booking" },
             { name: "Contact Us", href: "/contact" }
           ].map((item) => (
