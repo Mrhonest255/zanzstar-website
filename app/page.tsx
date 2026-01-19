@@ -132,7 +132,7 @@ export default function Home() {
       {/* Safari Explorer Section */}
       <section className="py-32 bg-[#232d2b] text-white">
         <div className="container mx-auto px-6">
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                  <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-primary-light mb-6">Mainland Adventures</p>
                  <h2 className="text-4xl md:text-6xl font-serif mb-10 leading-tight">Beyond the Coast:<br/> African Safaris</h2>
@@ -151,9 +151,14 @@ export default function Home() {
                  </div>
                  <a href="/arrangements" className="btn-primary inline-block">View Safari Packages</a>
               </div>
-              <div className="relative h-[600px] rounded-[3rem] overflow-hidden group">
-                 <img src="https://images.unsplash.com/photo-1516428940258-29737c5ae124?q=80&w=1200" loading="lazy" decoding="async" className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" alt="Safari Jeep" />
-                 <div className="absolute inset-0 bg-gradient-to-t from-[#232d2b] via-transparent to-transparent" />
+              <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden group shadow-2xl">
+                 <Image 
+                   src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200" 
+                   alt="Safari Jeep in Tanzania"
+                   fill
+                   className="object-cover group-hover:scale-105 transition-all duration-1000"
+                 />
+                 <div className="absolute inset-0 bg-gradient-to-t from-[#232d2b]/80 via-transparent to-transparent" />
               </div>
            </div>
         </div>
